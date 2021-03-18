@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
 const path = require('path');
 
@@ -17,6 +18,7 @@ module.exports = {
       template: './client/index.html',
       filename: 'index.html',
     }),
+    new NodePolyfillPlugin(),
   ],
   module: {
     rules: [
