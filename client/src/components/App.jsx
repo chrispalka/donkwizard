@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React from 'react';
 import useInput from '../hooks/useInput';
 import scraper from '../../../modules/scaper';
 
@@ -8,7 +8,6 @@ const axios = require('axios');
 const App = () => {
   const { value: siteValue, bind: bindSiteValue, reset: resetSiteValue } = useInput('');
   const { value: delimiterValue, bind: bindDelimiterValue, reset: resetDelimiterValue } = useInput('');
-  // const [sizeToggle, setSizeToggle] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,19 +43,6 @@ const App = () => {
                 </select>
               </label>
             </div>
-            {/* <div className="col">
-              <div className="switch switch-blue">
-                <label htmlFor="size-on" className="switch-label switch-label-off">
-                  Include Size?
-                  <input type="radio" onChange={() => setSizeToggle(true)} className="switch-input" name="toggle-check" id="size-on" />
-                  Yes
-                </label>
-                <label htmlFor="size-off" className="switch-label switch-label-on">
-                  <input type="radio" onChange={() => setSizeToggle(false)} className="switch-input" name="toggle-check" id="size-off" />
-                  No
-                </label>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>

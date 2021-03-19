@@ -6,7 +6,7 @@ const webHookMessage = (domain, productLink, message, title, image) => {
   const msg = new webhook.MessageBuilder()
     .setName('DonkWizard')
     .setThumbnail(image)
-    .addField(title, '', false)
+    .addField(title, productLink, false)
     .addField('Variants', message, true)
     .addField('Site', domain, true)
     .setColor('#4071bf');
