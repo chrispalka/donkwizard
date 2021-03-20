@@ -1,6 +1,9 @@
 /* eslint-disable no-console */
 const express = require('express');
 const path = require('path');
+const session = require('express-session');
+const passport = require('passport');
+
 require('dotenv').config();
 
 const cors = require('cors');
@@ -11,7 +14,12 @@ const { PORT } = process.env || 3000;
 
 app.use(cors());
 
+app.set('view-engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: false }));
+app.use(session({ secret: 'keyboard cat' }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', routes);
 
