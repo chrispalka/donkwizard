@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import useInput from '../hooks/useInput';
 import scraper from '../../../modules/scraper';
 
@@ -41,10 +41,11 @@ const App = () => {
       }
     })
     .catch((err) => console.log(err));
-
-  const handleWebhookSave = (e) => {
-    e.preventDefault();
+  const handleWebhookSave = () => {
     const webhookURL = webhookValue;
+    axios.post(`http://${SERVER}:${PORT}/saveWebhook`, {
+      webhookURL,
+    });
   };
   return (
     <>
@@ -79,14 +80,24 @@ const App = () => {
                 <label htmlFor="webhook_url">
                   <input type="text" {...bindWebhookValue} id="webhook_url" className="form-control" rows="1" />
                 </label>
+                <button type="button" disabled={!isLoggedIn} onClick={() => handleWebhookSave()}>Save</button>
               </div>
             </div>
           </div>
         </div>
       </form>
-      <div>
-        <a href="/logout">Logout</a>
-        <a href="/login">Login</a>
+      <div className="row">
+        <div className="col">
+          <a href="/logout">Logout</a>
+        </div>
+        <div className="col">
+          <a href="/login">Login</a>
+        </div>
+        <h1>
+          Is
+          {isLoggedIn === false ? ' NOT logged in' : ' logged in'}
+          {' '}
+        </h1>
       </div>
     </>
   );

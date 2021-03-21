@@ -90,12 +90,34 @@ router.post('/register', async (req, res) => {
 
 router.get('/logout', (req, res) => {
   req.logout();
-  console.log('Logged out!');
   res.redirect('/');
 });
 
 router.get('/isLoggedIn', (req, res) => {
   res.json(isAuthenticated(req));
+});
+
+router.post('/saveWebhook', async (req, res) => {
+  const { email } = req.user[0];
+  const { webhookURL } = req.body;
+  try {
+    const client = await pool.connect();
+    await client.query('BEGIN');
+    await JSON.stringify(client.query('SELECT id FROM "users" WHERE "email"=$1', [email], (err, result) => {
+      const { id } = result.rows[0];
+      client.query('INSERT INTO webhooks (webhook_id, webhook, user_id) VALUES ($1, $2, $3) ', [uuidv4(), webhookURL, id], (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          client.query('COMMIT');
+          res.redirect('/');
+        }
+      });
+    }));
+    client.release();
+  } catch (e) {
+    console.log(e);
+  }
 });
 
 passport.serializeUser((user, done) => {
