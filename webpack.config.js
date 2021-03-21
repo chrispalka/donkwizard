@@ -1,6 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
-
+const Dotenv = require('dotenv-webpack');
 const path = require('path');
 
 const SRC_DIR = path.join(__dirname, 'client/src');
@@ -19,6 +19,7 @@ module.exports = {
       filename: 'index.html',
     }),
     new NodePolyfillPlugin(),
+    new Dotenv(),
   ],
   module: {
     rules: [

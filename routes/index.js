@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const LocalStrategy = require('passport-local').Strategy;
 const { pool } = require('../db-pgsql/index');
+const { isAuthenticated } = require('../modules/auth');
 
 const router = Router();
 
@@ -37,8 +38,8 @@ passport.use(new LocalStrategy(
         if (result.rows[0] === null) {
           return done(null, false);
         }
-        bcrypt.compare(password, result.rows[0].password, (err, check) => {
-          if (err) {
+        bcrypt.compare(password, result.rows[0].password, (error, check) => {
+          if (error) {
             console.log('Error while checking password');
             return done();
           }
@@ -86,6 +87,14 @@ router.post('/register', async (req, res) => {
     console.log(e);
   }
 });
+
+router.get('/logout', (req, res) => {
+  req.logout();
+  console.log('Logged out!');
+  res.redirect('/');
+});
+
+router.get('/isLoggedIn', (req) => isAuthenticated(req));
 
 passport.serializeUser((user, done) => {
   done(null, user);
