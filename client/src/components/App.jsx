@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import useInput from '../hooks/useInput';
 import scraper from '../../../modules/scraper';
 
@@ -12,6 +12,7 @@ const App = () => {
   const { value: siteValue, bind: bindSiteValue, reset: resetSiteValue } = useInput('');
   const { value: delimiterValue, bind: bindDelimiterValue, reset: resetDelimiterValue } = useInput('');
   const { value: webhookValue, bind: bindWebhookValue } = useInput('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,7 +35,11 @@ const App = () => {
   };
 
   axios(`http://${SERVER}:${PORT}/isLoggedIn`)
-    .then((data) => console.log(data.data))
+    .then((data) => {
+      if (data.data) {
+        setIsLoggedIn(true);
+      }
+    })
     .catch((err) => console.log(err));
 
   const handleWebhookSave = (e) => {

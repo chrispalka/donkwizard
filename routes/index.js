@@ -94,7 +94,9 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-router.get('/isLoggedIn', (req) => isAuthenticated(req));
+router.get('/isLoggedIn', (req, res) => {
+  res.json(isAuthenticated(req));
+});
 
 passport.serializeUser((user, done) => {
   done(null, user);
