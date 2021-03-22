@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useInput from '../hooks/useInput';
 import scraper from '../../../modules/scraper';
 
@@ -13,6 +13,7 @@ const App = () => {
   const { value: delimiterValue, bind: bindDelimiterValue, reset: resetDelimiterValue } = useInput('');
   const { value: webhookValue, bind: bindWebhookValue } = useInput('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [webhookField, setWebhookField] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,20 +34,30 @@ const App = () => {
       resetDelimiterValue();
     }
   };
-
-  axios(`http://${SERVER}:${PORT}/isLoggedIn`)
-    .then((data) => {
-      if (data.data) {
-        setIsLoggedIn(true);
-      }
-    })
-    .catch((err) => console.log(err));
+  useEffect(() => {
+    axios(`http://${SERVER}:${PORT}/isLoggedIn`)
+      .then((response) => {
+        if (response.data) {
+          setIsLoggedIn(true);
+          axios(`http://${SERVER}:${PORT}/getWebhook`)
+            .then((data) => {
+              setWebhookField(data.data);
+            })
+            .catch((err) => console.log(err));
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
   const handleWebhookSave = () => {
     const webhookURL = webhookValue;
     axios.post(`http://${SERVER}:${PORT}/saveWebhook`, {
       webhookURL,
     });
   };
+
+  const handleWebhookQuery = () => {
+
+  }
   return (
     <>
       <form onSubmit={handleSubmit} id="variant_form">
@@ -78,7 +89,7 @@ const App = () => {
             <div className="row">
               <div className="col">
                 <label htmlFor="webhook_url">
-                  <input type="text" {...bindWebhookValue} id="webhook_url" className="form-control" rows="1" />
+                  <input type="text" {...bindWebhookValue} id="webhook_url" className="form-control" rows="1" value={webhookField} />
                 </label>
                 <button type="button" disabled={!isLoggedIn} onClick={() => handleWebhookSave()}>Save</button>
               </div>

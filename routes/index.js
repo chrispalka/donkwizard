@@ -66,7 +66,7 @@ router.post('/register', async (req, res) => {
     const client = await pool.connect();
     await client.query('BEGIN');
     const hashedPassword = await bcrypt.hash(password, 10);
-    await JSON.stringify(client.query('SELECT id FROM "users" WHERE "email"=$1', [email], (err, result) => {
+    JSON.stringify(client.query('SELECT id FROM "users" WHERE "email"=$1', [email], (err, result) => {
       if (result.rows[0]) {
         console.log('email already exists');
         res.redirect('/login');
@@ -103,14 +103,48 @@ router.post('/saveWebhook', async (req, res) => {
   try {
     const client = await pool.connect();
     await client.query('BEGIN');
-    await JSON.stringify(client.query('SELECT id FROM "users" WHERE "email"=$1', [email], (err, result) => {
+    JSON.stringify(client.query('SELECT id FROM "users" WHERE "email"=$1', [email], (err, result) => {
       const { id } = result.rows[0];
-      client.query('INSERT INTO webhooks (webhook_id, webhook, user_id) VALUES ($1, $2, $3) ', [uuidv4(), webhookURL, id], (err, result) => {
-        if (err) {
-          console.log(err);
+      client.query('SELECT webhook_id FROM "webhooks" WHERE "user_id"=$1', [id], (err, result) => {
+        if (result.rows[0]) {
+          client.query('UPDATE "webhooks" SET "webhook"=$1 WHERE "user_id"=$2', [webhookURL, id], (err, result) => {
+            if (err) {
+              console.log('error on update', err);
+            } else {
+              client.query('COMMIT');
+            }
+          });
         } else {
-          client.query('COMMIT');
-          res.redirect('/');
+          client.query('INSERT INTO webhooks (webhook_id, webhook, user_id) VALUES ($1, $2, $3) ', [uuidv4(), webhookURL, id], (err, result) => {
+            if (err) {
+              console.log('error on insert', err);
+            } else {
+              client.query('COMMIT');
+              console.log(result);
+            }
+          });
+        }
+      });
+    }));
+    client.release();
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+router.get('/getWebhook', async (req, res) => {
+  const { email } = req.user[0];
+  try {
+    const client = await pool.connect();
+    await client.query('BEGIN');
+    JSON.stringify(client.query('SELECT id FROM "users" WHERE "email"=$1', [email], (err, result) => {
+      const { id } = result.rows[0];
+      client.query('SELECT webhook FROM "webhooks" WHERE "user_id"=$1', [id], (err, result) => {
+        if (result.rows[0]) {
+          const { webhook } = result.rows[0];
+          res.json(webhook);
+        } else {
+          return false;
         }
       });
     }));
