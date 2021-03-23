@@ -1,7 +1,6 @@
 const webhook = require('webhook-discord');
 
 const webHookMessage = (domain, webhookURL, productLink, message, title, image) => {
-  console.log('WEBHOOK!', webhookURL);
   const Hook = new webhook.Webhook(webhookURL);
   const msg = new webhook.MessageBuilder()
     .setName('DonkWizard')

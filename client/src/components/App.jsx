@@ -1,5 +1,12 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
+import {
+  faEdit,
+  faSave,
+} from '@fortawesome/free-solid-svg-icons';
+import { Table } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useInput from '../hooks/useInput';
 import scraper from '../../../modules/scraper';
 
@@ -14,6 +21,7 @@ const App = () => {
   const { value: webhookValue, bind: bindWebhookValue } = useInput('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [webhookField, setWebhookField] = useState('');
+  const [isEdit, setIsEdit] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,7 +33,7 @@ const App = () => {
     if (domain !== undefined) {
       axios(url)
         .then((data) => scraper(
-          data.data, webhookValue,
+          data.data, !isLoggedIn ? webhookValue : webhookField,
           domain, handle, productLink,
           delimiterValue,
         ))
@@ -49,17 +57,20 @@ const App = () => {
       .catch((err) => console.log(err));
   }, []);
   const handleWebhookSave = () => {
-    const webhookURL = webhookValue;
+    const webhookURL = webhookField;
     axios.post(`http://${SERVER}:${PORT}/saveWebhook`, {
       webhookURL,
     });
+    setIsEdit(!isEdit);
   };
 
-  const handleWebhookQuery = () => {
+  const handleWebhookEdit = () => {
+    setIsEdit(!isEdit);
+  };
 
-  }
   return (
     <>
+      <h1>DONKWIZARD</h1>
       <form onSubmit={handleSubmit} id="variant_form">
         <div className="container">
           <div className="form-group" id="variant_form">
@@ -81,17 +92,55 @@ const App = () => {
             </div>
           </div>
         </div>
-        <input type="submit" value="Submit" />
-      </form>
-      <form onSubmit={handleWebhookSave} id="webhook_form">
         <div className="container">
           <div className="form-group" id="webhook_form">
             <div className="row">
               <div className="col">
                 <label htmlFor="webhook_url">
-                  <input type="text" {...bindWebhookValue} id="webhook_url" className="form-control" rows="1" value={webhookField} />
+                  { !isLoggedIn ? (
+                    <input type="text" {...bindWebhookValue} id="webhook_url" className="form-control" rows="1" />
+                  )
+                    : ''}
                 </label>
-                <button type="button" disabled={!isLoggedIn} onClick={() => handleWebhookSave()}>Save</button>
+                <input type="submit" value="Submit" />
+                { !isLoggedIn ? (
+                  <h1>To save your webhook please login!</h1>
+                )
+                  : ''}
+                {isLoggedIn
+                  ? (
+                    <Table striped bordered hover>
+                      <thead>
+                        <tr>
+                          <th>Webhook</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            {isEdit ? (
+                              <input
+                                value={webhookField}
+                                onChange={(e) => setWebhookField(e.target.value)}
+                              />
+                            )
+                              : webhookField}
+                          </td>
+                          <td>
+                            <FontAwesomeIcon
+                              icon={faEdit}
+                              onClick={() => handleWebhookEdit()}
+                            />
+                            <FontAwesomeIcon
+                              icon={faSave}
+                              onClick={() => handleWebhookSave()}
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  )
+                  : ''}
               </div>
             </div>
           </div>
