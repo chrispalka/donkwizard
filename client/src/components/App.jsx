@@ -5,6 +5,8 @@ import {
   faEdit,
   faSave,
 } from '@fortawesome/free-solid-svg-icons';
+import styled, { createGlobalStyle } from 'styled-components';
+import { Container } from 'react-bootstrap';
 import { Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useInput from '../hooks/useInput';
@@ -14,6 +16,10 @@ const axios = require('axios');
 
 const SERVER = process.env.SERVER || 'localhost';
 const PORT = process.env.PORT || 3000;
+
+const MainContainer = styled(Container)`
+  
+`;
 
 const App = () => {
   const { value: siteValue, bind: bindSiteValue, reset: resetSiteValue } = useInput('');
@@ -69,7 +75,7 @@ const App = () => {
   };
 
   return (
-    <>
+    <MainContainer>
       <h1>DONKWIZARD</h1>
       <form onSubmit={handleSubmit} id="variant_form">
         <div className="container">
@@ -97,13 +103,13 @@ const App = () => {
             <div className="row">
               <div className="col">
                 <label htmlFor="webhook_url">
-                  { !isLoggedIn ? (
+                  {!isLoggedIn ? (
                     <input type="text" {...bindWebhookValue} id="webhook_url" className="form-control" rows="1" />
                   )
                     : ''}
                 </label>
                 <input type="submit" value="Submit" />
-                { !isLoggedIn ? (
+                {!isLoggedIn ? (
                   <h1>To save your webhook please login!</h1>
                 )
                   : ''}
@@ -159,7 +165,7 @@ const App = () => {
           {' '}
         </h1>
       </div>
-    </>
+    </MainContainer>
   );
 };
 
