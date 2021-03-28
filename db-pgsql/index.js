@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable camelcase */
 const Sequelize = require('sequelize');
 const path = require('path');
@@ -32,8 +33,30 @@ module.exports = {
     where: { email },
   }).then((response) => (response === null ? false : response))
     .catch((err) => console.log(err)),
+  findUserByToken: (resetpasswordtoken) => model.users.findOne({
+    where: { resetpasswordtoken },
+  }).then((response) => response)
+    .catch((err) => console.log(err)),
   addUser: (id, email, password) => model.users.create({
     id, email, password,
+  }).then((response) => response)
+    .catch((err) => console.log(err)),
+  updateForgotPassword: (id, resetpasswordtoken, resetpasswordexpires) => model.users.update({
+    resetpasswordtoken, resetpasswordexpires,
+  },
+  {
+    where: {
+      id,
+    },
+  }).then((response) => response)
+    .catch((err) => console.log(err)),
+  updateUserPassword: (email, password) => model.users.update({
+    password,
+  },
+  {
+    where: {
+      email,
+    },
   }).then((response) => response)
     .catch((err) => console.log(err)),
   getWebhook: (user_id) => model.webhooks.findOne({
@@ -44,8 +67,11 @@ module.exports = {
     webhook_id, webhook, user_id,
   }).then((response) => response)
     .catch((err) => console.log(err)),
-  updateWebhook: (webhook, user_id) => model.webhooks.update({
-    webhook, user_id,
-  }).then((response) => response)
+  updateWebhook: (webhook, user_id) => model.webhooks.update({ webhook },
+    {
+      where: {
+        user_id,
+      },
+    }).then((response) => response)
     .catch((err) => console.log(err)),
 };

@@ -1,5 +1,3 @@
-const Sequelize = require('sequelize');
-
 module.exports = (sequelize, DataTypes) => sequelize.define('webhooks', {
   webhook_id: {
     type: DataTypes.UUID,

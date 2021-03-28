@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Container } from 'react-bootstrap';
 import useInput from '../hooks/useInput';
@@ -15,7 +15,7 @@ const FormContainer = styled(Container)`
 const ForgotPassword = () => {
   const { value: emailValue, bind: bindEmailValue, reset: resetEmailValue } = useInput('');
   const sendEmail = () => {
-    axios.post(`http://${SERVER}:${PORT}/forgotPassword`, {
+    axios.post('/forgotPassword', {
       emailValue,
     })
       .then((response) => console.log(response.data))
@@ -29,7 +29,7 @@ const ForgotPassword = () => {
           Email
           <input type="text" {...bindEmailValue} id="forgot_password" className="form-control" placeholder="name@example.com" />
         </label>
-        <button type="submit">Forgot password</button>
+        <button type="submit">Submit</button>
       </form>
     </FormContainer>
   );
