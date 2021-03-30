@@ -11,6 +11,7 @@ import {
 import styled, { createGlobalStyle } from 'styled-components';
 import { Container } from 'react-bootstrap';
 import {
+  ForgotPassword,
   Home, Login, Register, ResetPassword,
 } from '../layout/index';
 
@@ -20,11 +21,13 @@ const SERVER = process.env.SERVER || 'localhost';
 const PORT = process.env.PORT || 3000;
 
 const MainContainer = styled(Container)`
-
+  text-align: left;
+  width: 100%;
 `;
 
 const App = () => {
   const [hasRegistered, setHasRegistered] = useState(false);
+  const [passwordUpdated, setPasswordUpdated] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -41,6 +44,10 @@ const App = () => {
     setHasRegistered(registered);
   };
 
+  const handleHasUpdatedPassword = () => {
+    setPasswordUpdated(true);
+  };
+
   return (
     <MainContainer>
       <Router>
@@ -50,8 +57,14 @@ const App = () => {
           {isLoggedIn === false ? ' NOT logged in' : ' logged in'}
           {' '}
         </h1>
-        <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
+        {!isLoggedIn ? (
+          <Link to="/login">Login</Link>
+        )
+          : ''}
+        {!isLoggedIn ? (
+          <Link to="/register">Register</Link>
+        )
+          : ''}
         {isLoggedIn ? (
           <a href="/logout">Logout</a>
         )
@@ -65,9 +78,11 @@ const App = () => {
             {hasRegistered ? <Redirect to="/login" /> : <Register hasRegistered={handleHasRegistered} />}
           </Route>
           <Route path="/" exact component={() => <Home isLoggedIn={isLoggedIn} />} />
-          <Route path="/resetpassword/:token">
-            <ResetPassword />
+          <Route path="/forgotpassword" exact component={() => <ForgotPassword />} />
+          <Route path="/resetpassword/:token" exact component={() => <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}>
+            {passwordUpdated ? <Redirect to="/login" /> : <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}
           </Route>
+
         </Switch>
       </Router>
     </MainContainer>

@@ -6,12 +6,23 @@ import {
   faEdit,
   faSave,
 } from '@fortawesome/free-solid-svg-icons';
-import { Table } from 'react-bootstrap';
+import {
+  Form, Button, Container, Table,
+} from 'react-bootstrap';
 import styled from 'styled-components';
 import useInput from '../hooks/useInput';
 import scraper from '../../../modules/scraper';
 
 const axios = require('axios');
+
+const FormContainer = styled(Container)`
+`;
+
+const StyledForm = styled(Form)`
+`;
+
+const TableContainer = styled(Container)`
+`;
 
 const Home = ({ isLoggedIn }) => {
   const { value: siteValue, bind: bindSiteValue, reset: resetSiteValue } = useInput('');
@@ -61,81 +72,75 @@ const Home = ({ isLoggedIn }) => {
     setIsEdit(!isEdit);
   };
   return (
-    <form onSubmit={handleSubmit} id="variant_form">
-      <div className="container">
-        <div className="form-group" id="variant_form">
-          <div className="row">
-            <div className="col">
-              <label htmlFor="site_url">
-                Insert product URL
-                <input type="text" {...bindSiteValue} className="form-control" id="site_url" rows="1" placeholder="Paste product URL here" />
-              </label>
-              <label htmlFor="delimiter">
-                Select delimiter format
-                <select {...bindDelimiterValue}>
-                  <option value=":">:</option>
-                  <option value=";">;</option>
-                  <option value="-">-</option>
-                </select>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="container">
-        <div className="form-group" id="webhook_form">
-          <div className="row">
-            <div className="col">
-              <label htmlFor="webhook_url">
-                {!isLoggedIn ? (
-                  <input type="text" {...bindWebhookValue} id="webhook_url" className="form-control" rows="1" />
-                )
-                  : ''}
-              </label>
-              <input type="submit" value="Submit" />
-              {!isLoggedIn ? (
-                <h1>To save your webhook please login!</h1>
-              )
-                : ''}
-              {isLoggedIn
-                ? (
-                  <Table striped bordered hover>
-                    <thead>
-                      <tr>
-                        <th>Webhook</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          {isEdit ? (
-                            <input
-                              value={webhookField}
-                              onChange={(e) => setWebhookField(e.target.value)}
-                            />
-                          )
-                            : webhookField}
-                        </td>
-                        <td>
-                          <FontAwesomeIcon
-                            icon={faEdit}
-                            onClick={() => handleWebhookEdit()}
-                          />
-                          <FontAwesomeIcon
-                            icon={faSave}
-                            onClick={() => handleWebhookSave()}
-                          />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                )
-                : ''}
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
+    <>
+      <FormContainer>
+        <StyledForm onSubmit={handleSubmit}>
+          <Form.Group controlId="exampleForm.ControlTextarea1">
+            <Form.Label>Insert Product URL</Form.Label>
+            <Form.Control as="textarea" row={1} {...bindSiteValue} placeholder="Enter product URL" />
+          </Form.Group>
+          <Form.Group controlId="exampleForm.ControlSelect2">
+            <Form.Label>Select delimiter format</Form.Label>
+            <Form.Control {...bindDelimiterValue} as="select">
+              <option value=":">:</option>
+              <option value=";">;</option>
+              <option value="-">-</option>
+            </Form.Control>
+          </Form.Group>
+          {!isLoggedIn ? (
+            <Form.Group controlId="exampleForm.ControlTextarea1">
+              <Form.Label>Insert Webhook</Form.Label>
+              <Form.Control as="textarea" row={1} {...bindWebhookValue} placeholder="Login to save!" />
+            </Form.Group>
+          )
+            : ''}
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </StyledForm>
+      </FormContainer>
+      <TableContainer>
+        {!isLoggedIn ? (
+          <h1>To save your webhook please login!</h1>
+        )
+          : ''}
+        {isLoggedIn
+          ? (
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Webhook</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    {isEdit ? (
+                      <input
+                        style={{ width: '100%' }}
+                        value={webhookField}
+                        onChange={(e) => setWebhookField(e.target.value)}
+                      />
+                    )
+                      : webhookField}
+                  </td>
+                  <td>
+                    <FontAwesomeIcon
+                      icon={faEdit}
+                      onClick={() => handleWebhookEdit()}
+                    />
+                    <FontAwesomeIcon
+                      icon={faSave}
+                      onClick={() => handleWebhookSave()}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </Table>
+          )
+          : ''}
+      </TableContainer>
+    </>
   );
 };
 

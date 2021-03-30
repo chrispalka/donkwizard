@@ -1,12 +1,23 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { useParams, Link } from 'react-router-dom';
+import {
+  Form, Button, Container,
+} from 'react-bootstrap';
 import useInput from '../hooks/useInput';
 
 const axios = require('axios');
 
-const ResetPassword = () => {
+const FormContainer = styled(Container)`
+`;
+
+const StyledForm = styled(Form)`
+`;
+
+const ResetPassword = ({ hasUpdatedPassword }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [email, setUpdateEmail] = useState(true);
   const { token } = useParams();
@@ -30,6 +41,7 @@ const ResetPassword = () => {
       password: value,
     }).then((response) => console.log('Password updated ', response))
       .catch((err) => console.log(err));
+    hasUpdatedPassword();
     reset();
   };
 
@@ -39,23 +51,18 @@ const ResetPassword = () => {
         <h1>Loading...</h1>
       )
         : (
-          <div>
+          <FormContainer>
             <h1>Update Password</h1>
-            <form onSubmit={handleUpdatePassword} id="update_password">
-              <div className="container">
-                <div className="form-group">
-                  <div className="row">
-                    <div className="col">
-                      <label htmlFor="password_reset">
-                        <input type="text" {...bind} />
-                      </label>
-                      <input type="submit" value="Submit" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
+            <StyledForm onSubmit={handleUpdatePassword}>
+              <Form.Group controlId="formBasicPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" {...bind} placeholder="Password" />
+              </Form.Group>
+              <Button variant="primary" type="submit">
+                Submit
+              </Button>
+            </StyledForm>
+          </FormContainer>
         )}
     </>
   );

@@ -150,7 +150,7 @@ router.post('/forgotPassword', async (req, res) => {
           console.log(err);
         } else {
           console.log(response);
-          res.status(200).json('Recovery email sent!');
+          res.status(200);
         }
       });
     }

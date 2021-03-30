@@ -1,20 +1,27 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Container } from 'react-bootstrap';
+import {
+  Form, Button, Container,
+} from 'react-bootstrap';
 import useInput from '../hooks/useInput';
-import { ForgotPassword } from '../layout/index';
 
 const axios = require('axios');
 
 const FormContainer = styled(Container)`
 `;
 
+const StyledForm = styled(Form)`
+  span:hover {
+    cursor: pointer;
+  }
+`;
+
 const Login = () => {
   const { value: emailValue, bind: bindEmailValue, reset: resetEmailValue } = useInput('');
   const { value: passwordValue, bind: bindPasswordValue, reset: resetPasswordValue } = useInput('');
-  const [isForgotPassword, setForgotPassword] = useState(false);
   const handleLogin = () => {
     axios.post('login', {
       email: emailValue,
@@ -26,34 +33,23 @@ const Login = () => {
     resetPasswordValue();
   };
 
-  const handleSetForgotPassword = () => {
-    setForgotPassword(true);
-  };
   return (
-    <>
-      {
-        isForgotPassword
-          ? (
-            <ForgotPassword />
-          )
-          : (
-            <FormContainer>
-              <form onSubmit={handleLogin}>
-                <label htmlFor="email_field">
-                  Email
-                  <input type="text" {...bindEmailValue} id="email_field" className="form-control" placeholder="name@example.com" />
-                </label>
-                <label htmlFor="password_field">
-                  Password
-                  <input type="password" {...bindPasswordValue} id="password_field" className="form-control" />
-                </label>
-                <input type="submit" value="submit" />
-              </form>
-              <button type="button" onClick={handleSetForgotPassword}>Forgot Password</button>
-            </FormContainer>
-          )
-      }
-    </>
+    <FormContainer>
+      <StyledForm onSubmit={handleLogin}>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control type="email" {...bindEmailValue} placeholder="Enter email" />
+        </Form.Group>
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" {...bindPasswordValue} placeholder="Password" />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </StyledForm>
+      <Link to="/forgotpassword">Forgot Password?</Link>
+    </FormContainer>
   );
 };
 
