@@ -34,6 +34,10 @@ router.post('/login', passport.authenticate('local', {
   res.redirect('/');
 });
 
+router.get('/currentUser', (req, res) => {
+  res.json(req.user[0].email);
+});
+
 passport.use(new LocalStrategy(
   {
     usernameField: 'email',
@@ -179,7 +183,6 @@ router.post('/updatePasswordFromEmail', async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     await updateUserPassword(email, hashedPassword);
-    console.log('password updated!');
   } catch (e) {
     console.log(e);
   }

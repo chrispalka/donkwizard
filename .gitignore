@@ -1,2 +1,9 @@
 node_modules
 .env
+*.woff2
+*.woff
+*.ttf
+*.eot
+*.svg
+public/*.jpg
+public/*.gif

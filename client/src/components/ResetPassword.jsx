@@ -12,6 +12,7 @@ import useInput from '../hooks/useInput';
 const axios = require('axios');
 
 const FormContainer = styled(Container)`
+  width: 50%;
 `;
 
 const StyledForm = styled(Form)`

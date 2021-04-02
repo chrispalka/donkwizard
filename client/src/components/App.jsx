@@ -12,7 +12,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { Container } from 'react-bootstrap';
 import {
   ForgotPassword,
-  Home, Login, Register, ResetPassword,
+  Home, Login, Register, ResetPassword, NavBar,
 } from '../layout/index';
 
 const axios = require('axios');
@@ -23,6 +23,11 @@ const PORT = process.env.PORT || 3000;
 const MainContainer = styled(Container)`
   text-align: left;
   width: 100%;
+  .title {
+    font-family: 'Dela Gothic One';
+    color: blue;
+    text-align: center;
+  }
 `;
 
 const App = () => {
@@ -31,7 +36,7 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    axios(`http://${SERVER}:${PORT}/isLoggedIn`)
+    axios('/isLoggedIn')
       .then((response) => {
         if (response.data) {
           setIsLoggedIn(true);
@@ -51,25 +56,7 @@ const App = () => {
   return (
     <MainContainer>
       <Router>
-        <h1>DONKWIZARD</h1>
-        <h1>
-          Is
-          {isLoggedIn === false ? ' NOT logged in' : ' logged in'}
-          {' '}
-        </h1>
-        {!isLoggedIn ? (
-          <Link to="/login">Login</Link>
-        )
-          : ''}
-        {!isLoggedIn ? (
-          <Link to="/register">Register</Link>
-        )
-          : ''}
-        {isLoggedIn ? (
-          <a href="/logout">Logout</a>
-        )
-          : ''}
-
+        <NavBar isLoggedIn={isLoggedIn} />
         <Switch>
           <Route path="/login" exact component={() => <Login />}>
             {isLoggedIn ? <Redirect to="/" /> : <Login />}

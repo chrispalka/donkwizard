@@ -3,6 +3,7 @@ import Home from '../components/Home';
 import Register from '../components/Register';
 import ForgotPassword from '../components/ForgotPassword';
 import ResetPassword from '../components/ResetPassword';
+import NavBar from '../components/NavBar';
 
 export {
   Login,
@@ -10,4 +11,5 @@ export {
   Register,
   ForgotPassword,
   ResetPassword,
+  NavBar,
 };
