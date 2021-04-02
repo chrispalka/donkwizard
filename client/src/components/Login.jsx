@@ -14,6 +14,17 @@ const FormContainer = styled(Container)`
   width: 50%;
 `;
 
+const LinkContainer = styled(Container)`
+  padding: 0;
+  margin-top: 1em;
+  .register {
+    float: right;
+  }
+  a {
+    color: black;
+  }
+`;
+
 const StyledForm = styled(Form)`
   span:hover {
     cursor: pointer;
@@ -49,8 +60,10 @@ const Login = () => {
           Submit
         </Button>
       </StyledForm>
-      <Link to="/forgotpassword">Forgot Password?</Link>
-      <Link to="/register">Register</Link>
+      <LinkContainer>
+        <Link to="/forgotpassword">Forgot Password?</Link>
+        <Link to="/register" className="register">Register</Link>
+      </LinkContainer>
     </FormContainer>
   );
 };

@@ -4,6 +4,7 @@ import Register from '../components/Register';
 import ForgotPassword from '../components/ForgotPassword';
 import ResetPassword from '../components/ResetPassword';
 import NavBar from '../components/NavBar';
+import WebhookTable from '../components/WebhookTable';
 
 export {
   Login,
@@ -12,4 +13,5 @@ export {
   ForgotPassword,
   ResetPassword,
   NavBar,
+  WebhookTable,
 };

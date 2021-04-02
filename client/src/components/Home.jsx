@@ -1,17 +1,16 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faEdit,
-  faSave,
-} from '@fortawesome/free-solid-svg-icons';
-import {
-  Form, Button, Container, Table,
+  Form, Button, Container,
 } from 'react-bootstrap';
 import styled from 'styled-components';
 import useInput from '../hooks/useInput';
 import scraper from '../../../modules/scraper';
+import {
+  WebhookTable,
+} from '../layout/index';
 
 const axios = require('axios');
 
@@ -22,6 +21,7 @@ const StyledForm = styled(Form)`
 `;
 
 const TableContainer = styled(Container)`
+  margin-top: 1em;
 `;
 
 const Home = ({ isLoggedIn }) => {
@@ -62,7 +62,7 @@ const Home = ({ isLoggedIn }) => {
   };
   const handleWebhookSave = () => {
     const webhookURL = webhookField;
-    axios.post('saveWebhook', {
+    axios.post('/saveWebhook', {
       webhookURL,
     });
     setIsEdit(!isEdit);
@@ -90,7 +90,7 @@ const Home = ({ isLoggedIn }) => {
           {!isLoggedIn ? (
             <Form.Group controlId="exampleForm.ControlTextarea1">
               <Form.Label>Insert Webhook</Form.Label>
-              <Form.Control as="textarea" row={1} {...bindWebhookValue} placeholder="Login to save!" />
+              <Form.Control as="textarea" row={1} {...bindWebhookValue} placeholder="Register an account to save!" />
             </Form.Group>
           )
             : ''}
@@ -100,43 +100,15 @@ const Home = ({ isLoggedIn }) => {
         </StyledForm>
       </FormContainer>
       <TableContainer>
-        {!isLoggedIn ? (
-          <h1>To save your webhook please login!</h1>
-        )
-          : ''}
         {isLoggedIn
           ? (
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Webhook</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    {isEdit ? (
-                      <input
-                        style={{ width: '100%' }}
-                        value={webhookField}
-                        onChange={(e) => setWebhookField(e.target.value)}
-                      />
-                    )
-                      : webhookField}
-                  </td>
-                  <td>
-                    <FontAwesomeIcon
-                      icon={faEdit}
-                      onClick={() => handleWebhookEdit()}
-                    />
-                    <FontAwesomeIcon
-                      icon={faSave}
-                      onClick={() => handleWebhookSave()}
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </Table>
+            <WebhookTable
+              isEdit={isEdit}
+              handleWebhookEdit={handleWebhookEdit}
+              handleWebhookSave={handleWebhookSave}
+              setWebhookField={setWebhookField}
+              webhookField={webhookField}
+            />
           )
           : ''}
       </TableContainer>
