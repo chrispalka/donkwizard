@@ -35,10 +35,14 @@ const scraper = (data, webhookURL, domain, handle, productLink, delimiter = ':')
       });
     });
   });
-  const delimitedMessage = (`\`\`\`${delimitedResult.join('\n')}\`\`\``);
-  const message = (`\`\`\`${result.join('\n')}\`\`\``);
-  webhook(domain, webhookURL, productLink, delimitedMessage, productTitle, productImage);
-  webhook(domain, webhookURL, productLink, message, productTitle, productImage);
+  if (result.length !== 0) {
+    const delimitedMessage = (`\`\`\`${delimitedResult.join('\n')}\`\`\``);
+    const message = (`\`\`\`${result.join('\n')}\`\`\``);
+    webhook(domain, webhookURL, productLink, delimitedMessage, productTitle, productImage);
+    webhook(domain, webhookURL, productLink, message, productTitle, productImage);
+  } else {
+    return false;
+  }
 };
 
 export default scraper;

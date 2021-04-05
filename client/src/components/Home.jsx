@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Form, Button, Container,
 } from 'react-bootstrap';
+import Alert from 'react-bootstrap/Alert';
 import styled from 'styled-components';
 import useInput from '../hooks/useInput';
 import scraper from '../../../modules/scraper';
@@ -15,9 +16,22 @@ import {
 const axios = require('axios');
 
 const FormContainer = styled(Container)`
+  margin-top: 2em;
 `;
 
 const StyledForm = styled(Form)`
+`;
+
+const AlertContainer = styled(Container)`
+  width: 50%;
+`;
+
+const AlertStyle = styled(Alert)`
+  p {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 0;
+  }
 `;
 
 const TableContainer = styled(Container)`
@@ -30,6 +44,8 @@ const Home = ({ isLoggedIn }) => {
   const { value: webhookValue, bind: bindWebhookValue } = useInput('');
   const [isEdit, setIsEdit] = useState(false);
   const [webhookField, setWebhookField] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+  const [showVariantAlert, setShowVariantAlert] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -39,23 +55,34 @@ const Home = ({ isLoggedIn }) => {
         })
         .catch((err) => console.log(err));
     }
-  }, []);
+  }, [isLoggedIn]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const productLink = siteValue;
-    const valueArray = siteValue.split('/');
-    const domain = valueArray[2];
-    const handle = valueArray[valueArray.length - 1];
-    const url = `https://${domain}/products.json`;
-    if (domain !== undefined) {
-      axios(url)
-        .then((data) => scraper(
-          data.data, !isLoggedIn ? webhookValue : webhookField,
-          domain, handle, productLink,
-          delimiterValue,
-        ))
-        .catch((err) => console.log(err));
+    if (siteValue.length === 0) {
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 2000);
+    } else {
+      const productLink = siteValue;
+      const valueArray = siteValue.split('/');
+      const domain = valueArray[2];
+      const handle = valueArray[valueArray.length - 1];
+      const url = `https://${domain}/products.json`;
+      if (domain !== undefined) {
+        axios(url)
+          .then((data) => scraper(
+            data.data, !isLoggedIn ? webhookValue : webhookField,
+            domain, handle, productLink,
+            delimiterValue,
+          ))
+          .then((response) => {
+            if (!response) {
+              setShowVariantAlert(true);
+              setTimeout(() => setShowVariantAlert(false), 2000);
+            }
+          })
+          .catch((err) => console.log(err));
+      }
       resetSiteValue();
       resetDelimiterValue();
     }
@@ -112,6 +139,22 @@ const Home = ({ isLoggedIn }) => {
           )
           : ''}
       </TableContainer>
+      <AlertContainer>
+        <AlertStyle show={showAlert} variant="danger" transition>
+          <Alert.Heading>
+            <p>
+              Please enter a valid URL
+            </p>
+          </Alert.Heading>
+        </AlertStyle>
+        <AlertStyle show={showVariantAlert} variant="danger" transition>
+          <Alert.Heading>
+            <p>
+              No Variants Found
+            </p>
+          </Alert.Heading>
+        </AlertStyle>
+      </AlertContainer>
     </>
   );
 };

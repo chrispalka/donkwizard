@@ -30,8 +30,9 @@ router.get('/', (req, res) => {
 
 router.post('/login', passport.authenticate('local', {
   failureRedirect: '/login',
+  failureFlash: true,
 }), (req, res) => {
-  res.redirect('/');
+  res.send('Success');
 });
 
 router.get('/currentUser', (req, res) => {
@@ -41,8 +42,9 @@ router.get('/currentUser', (req, res) => {
 passport.use(new LocalStrategy(
   {
     usernameField: 'email',
+    passReqToCallback: true,
   },
-  async (username, password, done) => {
+  async (req, username, password, done) => {
     const user = await getUserName(username);
     if (user) {
       bcrypt.compare(password, user.dataValues.password, (error, check) => {
@@ -54,6 +56,8 @@ passport.use(new LocalStrategy(
         }
         return done(null, false);
       });
+    } else {
+      return done(null, false);
     }
   },
 ));
@@ -64,9 +68,10 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await getUserName(email);
     if (user) {
-      console.log('email already exists');
-      res.redirect('/login');
+      // set form validation!!
+      res.send('Failure');
     } else {
+      res.send('Success');
       await addUser(uuidv4(), email, hashedPassword);
     }
   } catch (err) {
