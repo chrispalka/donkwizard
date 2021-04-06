@@ -7,7 +7,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { Container } from 'react-bootstrap';
 import {
   ForgotPassword,
@@ -16,15 +16,13 @@ import {
 
 const axios = require('axios');
 
+const Global = createGlobalStyle`
+
+`;
+
 const MainContainer = styled(Container)`
-  width: 100%;
   .title {
     font-family: 'Dela Gothic One';
-    color: blue;
-    text-align: center;
-  }
-  .fade {
-    text-align: center;
   }
 `;
 
@@ -47,22 +45,25 @@ const App = () => {
   };
 
   return (
-    <MainContainer>
-      <Router>
-        <NavBar isLoggedIn={isLoggedIn} />
-        <Switch>
-          <Route path="/login" exact component={() => <Login />}>
-            {isLoggedIn ? <Redirect to="/" /> : <Login />}
-          </Route>
-          <Route path="/register" exact component={() => <Register />} />
-          <Route path="/" exact component={() => <Home isLoggedIn={isLoggedIn} />} />
-          <Route path="/forgotpassword" exact component={() => <ForgotPassword />} />
-          <Route path="/resetpassword/:token" exact component={() => <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}>
-            {passwordUpdated ? <Redirect to="/login" /> : <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}
-          </Route>
-        </Switch>
-      </Router>
-    </MainContainer>
+    <>
+      <Global />
+      <MainContainer>
+        <Router>
+          <NavBar isLoggedIn={isLoggedIn} />
+          <Switch>
+            <Route path="/login" exact component={() => <Login />}>
+              {isLoggedIn ? <Redirect to="/" /> : <Login />}
+            </Route>
+            <Route path="/register" exact component={() => <Register />} />
+            <Route path="/" exact component={() => <Home isLoggedIn={isLoggedIn} />} />
+            <Route path="/forgotpassword" exact component={() => <ForgotPassword />} />
+            <Route path="/resetpassword/:token" exact component={() => <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}>
+              {passwordUpdated ? <Redirect to="/login" /> : <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}
+            </Route>
+          </Switch>
+        </Router>
+      </MainContainer>
+    </>
   );
 };
 

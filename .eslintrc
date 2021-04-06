@@ -4,6 +4,7 @@
     "plugin:react-hooks/recommended"
   ],
   "parser": "babel-eslint",
+  "browser": true,
   "globals": {
     "fetch": false,
     "document": false

@@ -17,7 +17,7 @@ const WebhookTable = ({
   <Table striped bordered hover>
     <thead>
       <tr>
-        <th>Webhook</th>
+        <th>My Webhooks</th>
       </tr>
     </thead>
     <tbody>
@@ -33,14 +33,20 @@ const WebhookTable = ({
             : webhookField}
         </td>
         <td>
-          <FontAwesomeIcon
-            icon={faEdit}
-            onClick={() => handleWebhookEdit()}
-          />
-          <FontAwesomeIcon
-            icon={faSave}
-            onClick={() => handleWebhookSave()}
-          />
+          {!isEdit ? (
+            <FontAwesomeIcon
+              icon={faEdit}
+              onClick={() => handleWebhookEdit()}
+            />
+          )
+            : ''}
+          {isEdit ? (
+            <FontAwesomeIcon
+              icon={faSave}
+              onClick={() => handleWebhookSave()}
+            />
+          )
+            : ''}
         </td>
       </tr>
     </tbody>

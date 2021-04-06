@@ -46,6 +46,7 @@ const Home = ({ isLoggedIn }) => {
   const [webhookField, setWebhookField] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [showVariantAlert, setShowVariantAlert] = useState(false);
+  const [showWebhookAlert, setShowWebhookAlert] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -89,10 +90,15 @@ const Home = ({ isLoggedIn }) => {
   };
   const handleWebhookSave = () => {
     const webhookURL = webhookField;
-    axios.post('/saveWebhook', {
-      webhookURL,
-    });
-    setIsEdit(!isEdit);
+    if (webhookURL.length !== 120) {
+      setShowWebhookAlert(true);
+      setTimeout(() => setShowWebhookAlert(false), 2000);
+    } else {
+      axios.post('/saveWebhook', {
+        webhookURL,
+      });
+      setIsEdit(!isEdit);
+    }
   };
 
   const handleWebhookEdit = () => {
@@ -151,6 +157,13 @@ const Home = ({ isLoggedIn }) => {
           <Alert.Heading>
             <p>
               No Variants Found
+            </p>
+          </Alert.Heading>
+        </AlertStyle>
+        <AlertStyle show={showWebhookAlert} variant="danger" transition>
+          <Alert.Heading>
+            <p>
+              Invalid Webhook URL
             </p>
           </Alert.Heading>
         </AlertStyle>
