@@ -7,6 +7,10 @@
     "run": "nodemon server.js",
     "build": "webpack --config webpack.config.js --watch"
   },
+  "engines": {
+    "node": "14.15.4",
+    "npm": "7.6.3"
+  },
   "author": "Chris Palka",
   "license": "ISC",
   "dependencies": {
