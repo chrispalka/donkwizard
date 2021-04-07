@@ -13,6 +13,9 @@ const axios = require('axios');
 
 const FormContainer = styled(Container)`
   width: 50%;
+  .form-label {
+    color: #d0bcd5;
+  }
 `;
 
 const LinkContainer = styled(Container)`
@@ -22,7 +25,10 @@ const LinkContainer = styled(Container)`
     float: right;
   }
   a {
-    color: black;
+    color: #226ce0;
+    :hover {
+      color: #FFF;
+    }
   }
 `;
 

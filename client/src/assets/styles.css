@@ -11,3 +11,7 @@
        url('./fonts/dela-gothic-one-v1-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
        url('./fonts/dela-gothic-one-v1-latin-regular.svg#DelaGothicOne') format('svg'); /* Legacy iOS */
 }
+
+.navbar-custom {
+  background-color: #534b62;
+}

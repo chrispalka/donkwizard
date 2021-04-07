@@ -17,13 +17,12 @@ import {
 const axios = require('axios');
 
 const Global = createGlobalStyle`
-
-`;
-
-const MainContainer = styled(Container)`
-  .title {
-    font-family: 'Dela Gothic One';
+  body {
+    background-color: #1b1725;
   }
+  `;
+
+  const MainContainer = styled(Container)`
 `;
 
 const App = () => {

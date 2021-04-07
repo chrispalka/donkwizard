@@ -43,6 +43,7 @@ const WebhookTable = ({
       {webhookField === '' ? (
         <FontAwesomeIcon
           icon={faPlus}
+          style={{ color: 'green', cursor: 'pointer' }}
           onClick={() => handleWebhookEdit()}
         />
       ) :
@@ -51,10 +52,12 @@ const WebhookTable = ({
             <>
               <FontAwesomeIcon
                 icon={faEdit}
+                style={{ color: 'blue', cursor: 'pointer'  }}
                 onClick={() => handleWebhookEdit()}
               />
               <FontAwesomeIcon
                 icon={faTrash}
+                style={{ color: 'red', cursor: 'pointer' }}
                 onClick={() => handleWebhookDelete()}
               />
             </>
@@ -63,6 +66,7 @@ const WebhookTable = ({
           {isEdit ? (
             <FontAwesomeIcon
               icon={faSave}
+              style={{ color: 'green', cursor: 'pointer' }}
               onClick={() => handleWebhookSave()}
             />
           )

@@ -13,6 +13,9 @@ const axios = require('axios');
 
 const FormContainer = styled(Container)`
   width: 50%;
+  .form-label {
+    color: #d0bcd5;
+  }
 `;
 
 const StyledForm = styled(Form)`

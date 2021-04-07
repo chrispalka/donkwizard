@@ -23,6 +23,10 @@ const StyledForm = styled(Form)`
   .select-form {
     width: 5%;
   }
+  .form-label {
+    color: #d0bcd5;
+    font-family: 'Roboto';
+  }
 `;
 
 const AlertContainer = styled(Container)`
@@ -39,6 +43,13 @@ const AlertStyle = styled(Alert)`
 
 const TableContainer = styled(Container)`
   margin-top: 1em;
+  font-family: 'Roboto';
+  .svg-inline--fa {
+    margin-right: 0.5em;
+  }
+  .table {
+    color: #d0bcd5;
+  }
 `;
 
 const Home = ({ isLoggedIn }) => {
@@ -86,11 +97,11 @@ const Home = ({ isLoggedIn }) => {
             if (!response) {
               setShowVariantAlert(true);
               setTimeout(() => setShowVariantAlert(false), 2000);
+              resetSiteValue();
+              resetDelimiterValue();
             } else {
               setWebhookSubmitSuccessAlert(true)
               setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
-              resetSiteValue();
-              resetDelimiterValue();
             }
           })
           .catch((err) => console.log(err));
