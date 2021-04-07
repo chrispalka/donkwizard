@@ -5,3 +5,4 @@ client/src/assets/fonts/*.woff
 client/src/assets/fonts/*.ttf
 client/src/assets/fonts/*.eot
 client/src/assets/fonts/*.svg
+public/*.eot
