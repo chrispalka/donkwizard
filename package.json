@@ -5,7 +5,7 @@
   "main": "index.jsx",
   "scripts": {
     "run": "nodemon server.js",
-    "build": "webpack --config webpack.config.js --watch"
+    "build": "webpack --config webpack.config.js"
   },
   "engines": {
     "node": "14.15.4",
