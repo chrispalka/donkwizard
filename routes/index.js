@@ -16,6 +16,7 @@ const {
   updateForgotPassword,
   updateUserPassword,
   findUserByToken,
+  deleteWebhook,
 } = require('../db-pgsql/index');
 
 const { isAuthenticated } = require('../modules/auth');
@@ -68,7 +69,6 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await getUserName(email);
     if (user) {
-      // set form validation!!
       res.send('Failure');
     } else {
       res.send('Success');
@@ -192,6 +192,19 @@ router.post('/updatePasswordFromEmail', async (req, res) => {
     console.log(e);
   }
 });
+
+router.put('/deleteWebhook', async (req, res) => {
+  const { email } = req.user[0];
+  try {
+    const user = await getUserName(email);
+    if (user) {
+      await deleteWebhook(user.dataValues.id);
+      res.json('Success')
+    }
+  } catch (e) {
+    console.log(e)
+  }
+})
 
 passport.serializeUser((user, done) => {
   done(null, user);

@@ -20,6 +20,9 @@ const FormContainer = styled(Container)`
 `;
 
 const StyledForm = styled(Form)`
+  .select-form {
+    width: 5%;
+  }
 `;
 
 const AlertContainer = styled(Container)`
@@ -47,6 +50,9 @@ const Home = ({ isLoggedIn }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [showVariantAlert, setShowVariantAlert] = useState(false);
   const [showWebhookAlert, setShowWebhookAlert] = useState(false);
+  const [showWebhookSuccessAlert, setWebhookSuccessAlert] = useState(false);
+  const [showWebhookSubmitSuccessAlert, setWebhookSubmitSuccessAlert] = useState(false);
+  const [showWebhookDeleteSuccessAlert, setShowWebhookDeleteSuccessAlert] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -80,13 +86,16 @@ const Home = ({ isLoggedIn }) => {
             if (!response) {
               setShowVariantAlert(true);
               setTimeout(() => setShowVariantAlert(false), 2000);
+            } else {
+              setWebhookSubmitSuccessAlert(true)
+              setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
+              resetSiteValue();
+              resetDelimiterValue();
             }
           })
           .catch((err) => console.log(err));
+        }
       }
-      resetSiteValue();
-      resetDelimiterValue();
-    }
   };
   const handleWebhookSave = () => {
     const webhookURL = webhookField;
@@ -97,6 +106,8 @@ const Home = ({ isLoggedIn }) => {
       axios.post('/saveWebhook', {
         webhookURL,
       });
+      setWebhookSuccessAlert(true)
+      setTimeout(() => setWebhookSuccessAlert(false), 2000);
       setIsEdit(!isEdit);
     }
   };
@@ -104,24 +115,35 @@ const Home = ({ isLoggedIn }) => {
   const handleWebhookEdit = () => {
     setIsEdit(!isEdit);
   };
+  const handleWebhookDelete = () => {
+    axios.put('/deleteWebhook')
+    .then((response) => {
+      if (response.data === 'Success') {
+        setWebhookField('')
+        setShowWebhookDeleteSuccessAlert(true)
+        setTimeout(() => setShowWebhookDeleteSuccessAlert(false), 2000);
+      }
+    })
+    .catch((err) => console.log(err));
+  };
   return (
     <>
       <FormContainer>
         <StyledForm onSubmit={handleSubmit}>
-          <Form.Group controlId="exampleForm.ControlTextarea1">
+          <Form.Group controlId="ControlTextarea1">
             <Form.Label>Insert Product URL</Form.Label>
             <Form.Control as="textarea" row={1} {...bindSiteValue} placeholder="Enter product URL" />
           </Form.Group>
-          <Form.Group controlId="exampleForm.ControlSelect2">
+          <Form.Group controlId="ControlSelect2">
             <Form.Label>Select delimiter format</Form.Label>
-            <Form.Control {...bindDelimiterValue} as="select">
+            <Form.Control {...bindDelimiterValue} as="select" className="select-form">
               <option value=":">:</option>
               <option value=";">;</option>
               <option value="-">-</option>
             </Form.Control>
           </Form.Group>
           {!isLoggedIn ? (
-            <Form.Group controlId="exampleForm.ControlTextarea1">
+            <Form.Group controlId="eControlTextarea1">
               <Form.Label>Insert Webhook</Form.Label>
               <Form.Control as="textarea" row={1} {...bindWebhookValue} placeholder="Register an account to save!" />
             </Form.Group>
@@ -139,6 +161,7 @@ const Home = ({ isLoggedIn }) => {
               isEdit={isEdit}
               handleWebhookEdit={handleWebhookEdit}
               handleWebhookSave={handleWebhookSave}
+              handleWebhookDelete={handleWebhookDelete}
               setWebhookField={setWebhookField}
               webhookField={webhookField}
             />
@@ -164,6 +187,27 @@ const Home = ({ isLoggedIn }) => {
           <Alert.Heading>
             <p>
               Invalid Webhook URL
+            </p>
+          </Alert.Heading>
+        </AlertStyle>
+        <AlertStyle show={showWebhookSuccessAlert} variant="success" transition>
+          <Alert.Heading>
+            <p>
+              Webhook Saved
+            </p>
+          </Alert.Heading>
+        </AlertStyle>
+        <AlertStyle show={showWebhookSubmitSuccessAlert} variant="success" transition>
+          <Alert.Heading>
+            <p>
+              Webhook sent!
+            </p>
+          </Alert.Heading>
+        </AlertStyle>
+        <AlertStyle show={showWebhookDeleteSuccessAlert} variant="success" transition>
+          <Alert.Heading>
+            <p>
+              Webhook Deleted
             </p>
           </Alert.Heading>
         </AlertStyle>

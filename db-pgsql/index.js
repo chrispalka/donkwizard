@@ -74,4 +74,11 @@ module.exports = {
       },
     }).then((response) => response)
     .catch((err) => console.log(err)),
+  deleteWebhook: (user_id) => model.webhooks.destroy(
+    {
+      where: {
+        user_id,
+      },
+    }).then((response) => response)
+    .catch((err) => console.log(err)),
 };
