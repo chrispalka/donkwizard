@@ -1,8 +1,2 @@
 node_modules
 .env
-client/src/assets/fonts/*.woff2
-client/src/assets/fonts/*.woff
-client/src/assets/fonts/*.ttf
-client/src/assets/fonts/*.eot
-client/src/assets/fonts/*.svg
-public/*.eot
