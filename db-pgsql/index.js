@@ -8,7 +8,7 @@ const initModels = require('./models/init-models');
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const DATABASE = process.env.PGDATABASE;
-const HOST = process.env.PGHOST || 'localhost';
+const HOST = process.env.DATABASE_URL || 'localhost';
 const USER = process.env.PGUSER;
 const PASSWORD = process.env.PGPASSWORD;
 
