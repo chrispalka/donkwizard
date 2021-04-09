@@ -33,7 +33,6 @@ router.post('/login', passport.authenticate('local', {
   failureRedirect: '/login',
   failureFlash: true,
 }), (req, res) => {
-  console.log('SUCCESS');
   res.send('Success');
 });
 
@@ -47,16 +46,18 @@ passport.use(new LocalStrategy(
     passReqToCallback: true,
   },
   async (req, username, password, done) => {
-    console.log(username, password)
     const user = await getUserName(username);
     if (user) {
       bcrypt.compare(password, user.dataValues.password, (error, check) => {
+        console.log(check)
         if (error) {
+          console.log('error! ', error)
           return done();
         }
         if (check) {
           return done(null, [{ email: user.dataValues.email }]);
         }
+        console.log('done')
         return done(null, false);
       });
     } else {
@@ -69,6 +70,7 @@ router.post('/register', async (req, res) => {
   const { email, password } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(hashedPassword)
     const user = await getUserName(email);
     if (user) {
       res.send('Failure');

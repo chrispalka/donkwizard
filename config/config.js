@@ -6,7 +6,8 @@ module.exports = {
       "password": null,
       "database": process.env.PGDATABASE,
       "host": process.env.PGHOST,
-      "dialect": "postgres"
+      "dialect": "postgres",
+      "logging":  false
     },
     "production": {
 
@@ -15,6 +16,7 @@ module.exports = {
       "database": process.env.PGDATABASE,
       "host": process.env.PGHOST,
       "dialect": "postgres",
-      "use_env_variable": "DATABASE_URL"
+      "use_env_variable": "DATABASE_URL",
+      "logging":  false
     }
 };
