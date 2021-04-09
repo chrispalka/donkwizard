@@ -17,6 +17,7 @@ module.exports = {
       "host": process.env.PGHOST,
       "dialect": "postgres",
       "use_env_variable": "DATABASE_URL",
-      "logging":  false
+      "logging":  false,
+      "ssl": true
     }
 };
