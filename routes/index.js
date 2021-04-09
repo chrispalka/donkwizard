@@ -17,7 +17,7 @@ const {
   updateUserPassword,
   findUserByToken,
   deleteWebhook,
-} = require('../db-pgsql/index');
+} = require('../models/index');
 
 const { isAuthenticated } = require('../modules/auth');
 
@@ -33,6 +33,7 @@ router.post('/login', passport.authenticate('local', {
   failureRedirect: '/login',
   failureFlash: true,
 }), (req, res) => {
+  console.log('SUCCESS');
   res.send('Success');
 });
 
@@ -46,6 +47,7 @@ passport.use(new LocalStrategy(
     passReqToCallback: true,
   },
   async (req, username, password, done) => {
+    console.log(username, password)
     const user = await getUserName(username);
     if (user) {
       bcrypt.compare(password, user.dataValues.password, (error, check) => {
@@ -71,8 +73,8 @@ router.post('/register', async (req, res) => {
     if (user) {
       res.send('Failure');
     } else {
-      res.send('Success');
       await addUser(uuidv4(), email, hashedPassword);
+      res.send('Success');
     }
   } catch (err) {
     console.log(err);
@@ -84,7 +86,7 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-router.get('/isLoggedIn', (req, res) => {
+router.get('/isLoggedIn', async (req, res) => {
   res.json(isAuthenticated(req));
 });
 

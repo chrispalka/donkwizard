@@ -3,13 +3,15 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const passport = require('passport');
-
 const cors = require('cors');
 const routes = require('./routes/index');
 
+
 const app = express();
 const PORT = process.env.PORT || 3000;
-const { SECRET } = process.env;
+const { SECRET } = process.env
+console.log(SECRET)
+
 
 app.use(cors());
 
