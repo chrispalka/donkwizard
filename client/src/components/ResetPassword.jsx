@@ -69,7 +69,7 @@ const ResetPassword = ({ hasUpdatedPassword }) => {
       .catch((err) => console.log(err));
     setShowUpdateSuccess(true);
     setTimeout(() => setShowUpdateSuccess(false), 2000);
-    setTimeout(() => handleUpdatePassword(), 3000)
+    setTimeout(() => hasUpdatedPassword(), 3000)
     reset();
   };
 
