@@ -21,6 +21,7 @@ const FormContainer = styled(Container)`
 
 const AlertContainer = styled(Container)`
   width: 50%;
+  margin-top: 2em;
 `;
 
 const AlertStyle = styled(Alert)`

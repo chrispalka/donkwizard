@@ -62,7 +62,6 @@ const Login = () => {
       password: passwordValue,
     })
       .then((response) => {
-        console.log(response.data)
         if (response.data !== 'Success') {
           setShowAlert(true);
           setTimeout(() => setShowAlert(false), 2000);
