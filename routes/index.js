@@ -155,7 +155,7 @@ router.post('/forgotPassword', async (req, res) => {
         subject: 'Your password reset link',
         text: 'You are receiving this message in response to your request to reset your password.\n\n'
           + 'Please click the following link or paste into your browser to complete the process (link expires within 1 hour).\n\n'
-          + `http://localhost:3000/resetpassword/${token}\n\n`
+          + `https://donkwizard.net/resetpassword/${token}\n\n`
           + 'If you did not request this, please ignore and your password will remain unchanged\n',
       };
       transporter.sendMail(mailOptions, (err, response) => {
