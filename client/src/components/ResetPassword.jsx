@@ -88,7 +88,7 @@ const ResetPassword = ({ hasUpdatedPassword }) => {
                 <Form.Label>Update Password</Form.Label>
                 <Form.Control type="password" {...bind} placeholder="Password" />
               </Form.Group>
-              <Button variant="primary" type="submit">
+              <Button variant="warning" type="submit">
                 Submit
               </Button>
             </StyledForm>

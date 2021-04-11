@@ -55,7 +55,7 @@ const ForgotPassword = () => {
             <Form.Label>Email</Form.Label>
             <Form.Control type="email" {...bindEmailValue} placeholder="Enter email" />
           </Form.Group>
-          <Button variant="primary" type="submit">
+          <Button variant="warning" type="submit">
             Submit
               </Button>
         </StyledForm>

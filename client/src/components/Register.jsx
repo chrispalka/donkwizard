@@ -67,7 +67,7 @@ const Register = () => {
             <Form.Label>Password</Form.Label>
             <Form.Control type="password" {...bindPasswordValue} placeholder="Password" />
           </Form.Group>
-          <Button variant="primary" type="submit">
+          <Button variant="warning" type="submit">
             Submit
           </Button>
         </StyledForm>

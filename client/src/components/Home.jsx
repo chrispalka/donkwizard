@@ -160,7 +160,7 @@ const Home = ({ isLoggedIn }) => {
             </Form.Group>
           )
             : ''}
-          <Button variant="primary" type="submit">
+          <Button variant="warning" type="submit">
             Submit
           </Button>
         </StyledForm>
