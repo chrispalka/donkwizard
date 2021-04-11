@@ -9,6 +9,8 @@ import {
   faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
+const iconColor = ''
+
 const WebhookTable = ({
   isEdit,
   handleWebhookEdit,
@@ -43,7 +45,7 @@ const WebhookTable = ({
       {webhookField === '' ? (
         <FontAwesomeIcon
           icon={faPlus}
-          style={{ color: 'green', cursor: 'pointer' }}
+          style={{ color: '#f5cb5c', cursor: 'pointer' }}
           onClick={() => handleWebhookEdit()}
         />
       ) :
@@ -52,12 +54,12 @@ const WebhookTable = ({
             <>
               <FontAwesomeIcon
                 icon={faEdit}
-                style={{ color: 'blue', cursor: 'pointer'  }}
+                style={{ color: '#f5cb5c', cursor: 'pointer'  }}
                 onClick={() => handleWebhookEdit()}
               />
               <FontAwesomeIcon
                 icon={faTrash}
-                style={{ color: 'red', cursor: 'pointer' }}
+                style={{ color: '#f5cb5c', cursor: 'pointer' }}
                 onClick={() => handleWebhookDelete()}
               />
             </>
@@ -66,7 +68,7 @@ const WebhookTable = ({
           {isEdit ? (
             <FontAwesomeIcon
               icon={faSave}
-              style={{ color: 'green', cursor: 'pointer' }}
+              style={{ color: '#f5cb5c', cursor: 'pointer' }}
               onClick={() => handleWebhookSave()}
             />
           )

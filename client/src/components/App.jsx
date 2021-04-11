@@ -23,7 +23,7 @@ const axios = require('axios');
 
 const Global = createGlobalStyle`
   body {
-    background-color: #1b1725;
+    background-color: #242423;
   }
   `;
 

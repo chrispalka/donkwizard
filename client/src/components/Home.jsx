@@ -24,7 +24,7 @@ const StyledForm = styled(Form)`
     width: 5%;
   }
   .form-label {
-    color: #d0bcd5;
+    color: #cfdbd5;
     font-family: 'Roboto';
   }
 `;
@@ -48,7 +48,7 @@ const TableContainer = styled(Container)`
     margin-right: 0.5em;
   }
   .table {
-    color: #d0bcd5;
+    color: #cfdbd5;
   }
 `;
 

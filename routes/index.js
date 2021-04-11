@@ -66,12 +66,11 @@ passport.use(new LocalStrategy(
 router.post('/register', async (req, res) => {
   const { email, password } = req.body;
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword)
     const user = await getUserName(email);
     if (user) {
       res.send('Failure');
     } else {
+      const hashedPassword = await bcrypt.hash(password, 10);
       await addUser(uuidv4(), email, hashedPassword);
       res.send('Success');
     }

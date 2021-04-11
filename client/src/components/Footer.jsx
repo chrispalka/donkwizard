@@ -15,7 +15,7 @@ const FooterContainer = styled(Container)`
   text-align: center;
   font-family: 'Roboto';
   a {
-    color: #d0bcd5;
+    color: #cfdbd5;
     text-decoration: none;
   }
   h1 {
@@ -33,7 +33,7 @@ const Footer = ({ links }) => (
       {links.map((link) => (
         <li>
           <a href={link.path} target="_blank" rel="noreferrer noopener">
-            <FontAwesomeIcon className="icon-class" style={{ cursor: 'pointer' }} icon={link.icon} />
+            <FontAwesomeIcon style={{ cursor: 'pointer' }} icon={link.icon} />
           </a>
         </li>
       ))}

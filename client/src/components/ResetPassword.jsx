@@ -15,7 +15,7 @@ const axios = require('axios');
 const FormContainer = styled(Container)`
   width: 50%;
   .form-label {
-    color: #d0bcd5;
+    color: #cfdbd5;
   }
 `;
 
@@ -34,7 +34,7 @@ const AlertStyle = styled(Alert)`
 
 const LoadingContainer = styled(Container)`
   width: 50%;
-  color: #d0bcd5;
+  color: #cfdbd5;
   font-family: 'Roboto';
   text-align: center;
   margin-top: 20em;

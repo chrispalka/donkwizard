@@ -16,7 +16,7 @@ const NavContainer = styled(Container)`
 }
 .nav-title {
   font-family: 'Dela Gothic One';
-  color: #226ce0;
+  color: #f5cb5c;
   cursor: pointer;
   :hover {
     color: #FFF;
@@ -25,7 +25,7 @@ const NavContainer = styled(Container)`
 .ml-auto {
   .nav-link-custom {
     text-decoration: none;
-    color: #226ce0;
+    color: #f5cb5c;
     :hover {
       color: #FFF;
     }
@@ -36,14 +36,14 @@ const NavContainer = styled(Container)`
     margin-left: 0.5em;
     font-family: 'Roboto';
     padding: 0;
-    color: #226ce0;
+    color: #f5cb5c;
   }
   margin-bottom: 4em;
   .dropdown-menu {
-    background-color: #d0bcd5;
+    background-color: #333533;
   }
   #nav-dropdown {
-    color: #226ce0;
+    color: #f5cb5c;
     :hover {
       color: #FFF;
     }
