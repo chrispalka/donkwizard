@@ -7,11 +7,16 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faEnvelopeSquare,
+} from '@fortawesome/free-solid-svg-icons';
+import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons"
 import styled, { createGlobalStyle } from 'styled-components';
 import { Container } from 'react-bootstrap';
 import {
   ForgotPassword,
-  Home, Login, Register, ResetPassword, NavBar,
+  Home, Login, Register, ResetPassword, NavBar, Footer,
 } from '../layout/index';
 
 const axios = require('axios');
@@ -24,6 +29,21 @@ const Global = createGlobalStyle`
 
   const MainContainer = styled(Container)`
 `;
+
+const FooterLinks = [
+  {
+    path: 'mailto:cpalka87@gmail.com',
+    icon: faEnvelopeSquare
+  },
+  {
+    path: 'https://github.com/chrispalka',
+    icon: faGithub
+  },
+  {
+    path: 'https://linkedin.com/in/chrispalka',
+    icon: faLinkedin
+  },
+]
 
 const App = () => {
   const [passwordUpdated, setPasswordUpdated] = useState(false);
@@ -61,6 +81,7 @@ const App = () => {
             </Route>
           </Switch>
         </Router>
+        <Footer links={FooterLinks} />
       </MainContainer>
     </>
   );

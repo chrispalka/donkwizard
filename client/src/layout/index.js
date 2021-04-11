@@ -6,6 +6,8 @@ import ForgotPassword from '../components/ForgotPassword';
 import ResetPassword from '../components/ResetPassword';
 import NavBar from '../components/NavBar';
 import WebhookTable from '../components/WebhookTable';
+import Footer from '../components/Footer';
+
 
 export {
   Login,
@@ -15,4 +17,5 @@ export {
   ResetPassword,
   NavBar,
   WebhookTable,
+  Footer,
 };

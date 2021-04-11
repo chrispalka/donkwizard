@@ -49,15 +49,12 @@ passport.use(new LocalStrategy(
     const user = await getUserName(username);
     if (user) {
       bcrypt.compare(password, user.dataValues.password, (error, check) => {
-        console.log(check)
         if (error) {
-          console.log('error! ', error)
           return done();
         }
         if (check) {
           return done(null, [{ email: user.dataValues.email }]);
         }
-        console.log('done')
         return done(null, false);
       });
     } else {
