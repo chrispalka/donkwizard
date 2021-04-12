@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const path = require('path');
 
 const SRC_DIR = path.join(__dirname, 'client/src');
@@ -19,6 +20,7 @@ module.exports = {
       filename: 'index.html',
     }),
     new NodePolyfillPlugin(),
+    new FaviconsWebpackPlugin('./client/src/assets/favicon.ico'),
   ],
   module: {
     rules: [
@@ -38,7 +40,7 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(png|jpg|svg|eot|ttf|woff|woff2)$/,
+        test: /\.(png|jpg|svg|eot|ttf|woff|woff2|ico|)$/,
         loader: 'url-loader',
         options: {
           limit: 10000,

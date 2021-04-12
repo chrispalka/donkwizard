@@ -20,7 +20,7 @@ const WebhookTable = ({
   setWebhookField,
 }) => (
   <>
-    <Table striped bordered hover>
+    <Table striped bordered>
       <thead>
         <tr>
           <th>My Webhooks</th>

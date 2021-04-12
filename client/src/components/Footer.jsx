@@ -30,8 +30,8 @@ const FooterContainer = styled(Container)`
 const Footer = ({ links }) => (
   <FooterContainer>
     <ul>
-      {links.map((link) => (
-        <li>
+      {links.map((link, i) => (
+        <li key={i}>
           <a href={link.path} target="_blank" rel="noreferrer noopener">
             <FontAwesomeIcon style={{ cursor: 'pointer' }} icon={link.icon} />
           </a>
