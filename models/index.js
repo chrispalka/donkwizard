@@ -53,6 +53,8 @@ module.exports = {
   }).then((response) => response)
     .catch((err) => console.log(err)),
   getRecent: (user_id) => db.Recent.findAll({
+    limit: 5,
+    order: [['createdAt', 'DESC']],
     where: {
       user_id,
     },
