@@ -23,6 +23,12 @@ const StyledForm = styled(Form)`
   .select-form {
     width: 5%;
   }
+  .variant-box {
+    width: 25%;
+  }
+  .variant-title {
+    margin-top: 1em;
+  }
   .form-label {
     color: #cfdbd5;
     font-family: 'Roboto';
@@ -77,6 +83,7 @@ const Home = ({ isLoggedIn }) => {
   const [showWebhookSuccessAlert, setWebhookSuccessAlert] = useState(false);
   const [showWebhookSubmitSuccessAlert, setWebhookSubmitSuccessAlert] = useState(false);
   const [showWebhookDeleteSuccessAlert, setShowWebhookDeleteSuccessAlert] = useState(false);
+  const [variantBox, setVariantBox] = useState('');
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -100,6 +107,10 @@ const Home = ({ isLoggedIn }) => {
     if (siteValue.length === 0) {
       setShowAlert(true);
       setTimeout(() => setShowAlert(false), 2000);
+      console.log(webhookValue.length)
+    } else if (webhookValue.length !== 120 && webhookField.length !== 120) {
+      setShowWebhookAlert(true);
+      setTimeout(() => setShowWebhookAlert(false), 2000);
     } else {
       const productLink = siteValue;
       const valueArray = siteValue.split('/');
@@ -120,6 +131,7 @@ const Home = ({ isLoggedIn }) => {
               resetSiteValue();
               resetDelimiterValue();
             } else {
+              setVariantBox(response)
               handleRecentSave();
               setWebhookSubmitSuccessAlert(true)
               setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
@@ -190,6 +202,10 @@ const Home = ({ isLoggedIn }) => {
               <option value=":">:</option>
               <option value=";">;</option>
               <option value="-">-</option>
+            </Form.Control>
+            <Form.Label className="variant-title">Variants</Form.Label>
+            <Form.Control as="textarea" className="variant-box" rows="12" defaultValue={variantBox}>
+
             </Form.Control>
           </Form.Group>
           {!isLoggedIn ? (

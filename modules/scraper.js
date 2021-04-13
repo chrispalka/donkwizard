@@ -40,7 +40,7 @@ const scraper = (data, webhookURL, domain, handle, productLink, delimiter = ':')
     const message = (`\`\`\`${result.join('\n')}\`\`\``);
     webhook(domain, webhookURL, productLink, delimitedMessage, productTitle, productImage);
     webhook(domain, webhookURL, productLink, message, productTitle, productImage);
-    return true;
+    return result.join('\n');
   } else {
     return false;
   }

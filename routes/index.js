@@ -130,17 +130,19 @@ router.get('/getWebhook', async (req, res) => {
 });
 
 router.post('/saveRecent', async (req, res) => {
-  const { email } = req.user[0];
-  const { siteValue } = req.body;
-  try {
-    const user = await getUserName(email);
-    if (user) {
-      await addRecent(uuidv4(), siteValue, user.dataValues.id);
-    } else {
-      return false;
+  if (req.user) {
+    const { email } = req.user[0];
+    const { siteValue } = req.body;
+    try {
+      const user = await getUserName(email);
+      if (user) {
+        await addRecent(uuidv4(), siteValue, user.dataValues.id);
+      } else {
+        return false;
+      }
+    } catch (e) {
+      console.log(e);
     }
-  } catch (e) {
-    console.log(e);
   }
 });
 
