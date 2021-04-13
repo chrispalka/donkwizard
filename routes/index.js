@@ -136,7 +136,7 @@ router.post('/saveRecent', async (req, res) => {
     try {
       const user = await getUserName(email);
       if (user) {
-        await addRecent(uuidv4(), siteValue, user.dataValues.id);
+        await addRecent(uuidv4(), siteValue, user.dataValues.id, Date.now());
       } else {
         return false;
       }

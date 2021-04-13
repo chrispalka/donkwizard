@@ -10,7 +10,7 @@ const Recents = ({ recents }) => (
         </tr>
       </thead>
       <tbody>
-        {recents[0].map((recent, i) => (
+        {recents.map((recent, i) => (
           <tr key={i}>
             <td>
               {recent}

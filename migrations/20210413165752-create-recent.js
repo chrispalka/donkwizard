@@ -16,6 +16,14 @@ module.exports = {
           model: 'Users',
           key: 'id',
         },
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: true,
+        type: Sequelize.DATE
       }
     });
   },

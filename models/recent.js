@@ -15,11 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   };
   Recent.init({
     recents: DataTypes.STRING(500),
-    user_id: DataTypes.INTEGER
+    user_id: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Recent',
-    timestamps: false
   });
   return Recent;
 };

@@ -48,8 +48,8 @@ module.exports = {
     id, email, password,
   }).then((response) => response)
     .catch((err) => console.log(err)),
-  addRecent: (id, recents, user_id) => db.Recent.create({
-    id, recents, user_id,
+  addRecent: (id, recents, user_id, createdAt) => db.Recent.create({
+    id, recents, user_id, createdAt,
   }).then((response) => response)
     .catch((err) => console.log(err)),
   getRecent: (user_id) => db.Recent.findAll({

@@ -89,22 +89,26 @@ const Home = ({ isLoggedIn }) => {
   const [showWebhookDeleteSuccessAlert, setShowWebhookDeleteSuccessAlert] = useState(false);
   const [variantBox, setVariantBox] = useState('');
 
+
   useEffect(() => {
     if (isLoggedIn) {
       axios('/getWebhook')
         .then((webhookData) => {
           setWebhookField(webhookData.data);
         })
-        .catch((err) => console.log(err));
-      axios('/getRecent')
-        .then((recentData) => {
-          if (recentData.data.length !== 0) {
-            setRecentsArray(recentsArray => [...recentsArray, recentData.data])
-          }
+        .then(() => {
+          axios('/getRecent')
+            .then((recentData) => {
+              if (recentData.data.length !== 0) {
+                setRecentsArray([...recentData.data])
+              }
+            })
+            .catch((err) => console.log(err));
         })
         .catch((err) => console.log(err));
-    }
-  }, [isLoggedIn]);
+      }
+  }, [isLoggedIn, recentsArray]);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -145,6 +149,7 @@ const Home = ({ isLoggedIn }) => {
       }
     }
   };
+
   const handleWebhookSave = () => {
     const webhookURL = webhookField;
     if (webhookURL.length !== 120) {
