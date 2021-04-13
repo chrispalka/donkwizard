@@ -10,7 +10,6 @@ const routes = require('./routes/index');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const { SECRET } = process.env
-console.log(SECRET)
 
 
 app.use(cors());

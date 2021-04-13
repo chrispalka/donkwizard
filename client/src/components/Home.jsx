@@ -12,6 +12,10 @@ import scraper from '../../../modules/scraper';
 import {
   WebhookTable, Recents,
 } from '../layout/index';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faClipboard
+} from '@fortawesome/free-solid-svg-icons';
 
 const axios = require('axios');
 
@@ -93,12 +97,12 @@ const Home = ({ isLoggedIn }) => {
         })
         .catch((err) => console.log(err));
       axios('/getRecent')
-      .then((recentData) => {
-        if (recentData.data.length !== 0) {
-          setRecentsArray(recentsArray => [...recentsArray, recentData.data])
-        }
-      })
-      .catch((err) => console.log(err));
+        .then((recentData) => {
+          if (recentData.data.length !== 0) {
+            setRecentsArray(recentsArray => [...recentsArray, recentData.data])
+          }
+        })
+        .catch((err) => console.log(err));
     }
   }, [isLoggedIn]);
 
@@ -150,7 +154,7 @@ const Home = ({ isLoggedIn }) => {
       axios.post('/saveWebhook', {
         webhookURL,
       })
-      .catch((err) => console.log(err));
+        .catch((err) => console.log(err));
       setWebhookSuccessAlert(true)
       setTimeout(() => setWebhookSuccessAlert(false), 2000);
       setIsEdit(!isEdit);
@@ -161,9 +165,12 @@ const Home = ({ isLoggedIn }) => {
     axios.post('/saveRecent', {
       siteValue,
     })
-    .catch((err) => console.log(err));
+      .catch((err) => console.log(err));
   }
 
+  const handleCopy = (variantBox) => {
+    navigator.clipboard.writeText(variantBox)
+  }
 
   const handleWebhookEdit = () => {
     setIsEdit(!isEdit);
@@ -205,8 +212,12 @@ const Home = ({ isLoggedIn }) => {
             </Form.Control>
             <Form.Label className="variant-title">Variants</Form.Label>
             <Form.Control as="textarea" className="variant-box" rows="12" defaultValue={variantBox}>
-
             </Form.Control>
+            <FontAwesomeIcon
+              icon={faClipboard}
+              style={{ color: '#f5cb5c', cursor: 'pointer' }}
+              onClick={() => handleCopy(variantBox)}
+            />
           </Form.Group>
           {!isLoggedIn ? (
             <Form.Group controlId="eControlTextarea1">
