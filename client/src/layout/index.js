@@ -7,6 +7,7 @@ import ResetPassword from '../components/ResetPassword';
 import NavBar from '../components/NavBar';
 import WebhookTable from '../components/WebhookTable';
 import Footer from '../components/Footer';
+import Recents from '../components/Recents';
 
 
 export {
@@ -18,4 +19,5 @@ export {
   NavBar,
   WebhookTable,
   Footer,
+  Recents,
 };

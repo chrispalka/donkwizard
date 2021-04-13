@@ -48,6 +48,16 @@ module.exports = {
     id, email, password,
   }).then((response) => response)
     .catch((err) => console.log(err)),
+  addRecent: (id, recents, user_id) => db.Recent.create({
+    id, recents, user_id,
+  }).then((response) => response)
+    .catch((err) => console.log(err)),
+  getRecent: (user_id) => db.Recent.findAll({
+    where: {
+      user_id,
+    },
+  }).then((response) => response)
+    .catch((err) => console.log(err)),
   updateForgotPassword: (id, resetpasswordtoken, resetpasswordexpires) => db.User.update({
     resetpasswordtoken, resetpasswordexpires,
   },

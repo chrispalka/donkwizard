@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import useInput from '../hooks/useInput';
 import scraper from '../../../modules/scraper';
 import {
-  WebhookTable,
+  WebhookTable, Recents,
 } from '../layout/index';
 
 const axios = require('axios');
@@ -41,8 +41,20 @@ const AlertStyle = styled(Alert)`
   }
 `;
 
-const TableContainer = styled(Container)`
+const WebhookTableContainer = styled(Container)`
   margin-top: 1em;
+  font-family: 'Roboto';
+  .svg-inline--fa {
+    margin-right: 0.5em;
+  }
+  .table {
+    color: #cfdbd5;
+  }
+`;
+
+const RecentsTableContainer = styled(Container)`
+  margin-top: 1em;
+  padding: 0;
   font-family: 'Roboto';
   .svg-inline--fa {
     margin-right: 0.5em;
@@ -58,6 +70,7 @@ const Home = ({ isLoggedIn }) => {
   const { value: webhookValue, bind: bindWebhookValue } = useInput('');
   const [isEdit, setIsEdit] = useState(false);
   const [webhookField, setWebhookField] = useState('');
+  const [recentsArray, setRecentsArray] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [showVariantAlert, setShowVariantAlert] = useState(false);
   const [showWebhookAlert, setShowWebhookAlert] = useState(false);
@@ -68,10 +81,17 @@ const Home = ({ isLoggedIn }) => {
   useEffect(() => {
     if (isLoggedIn) {
       axios('/getWebhook')
-        .then((data) => {
-          setWebhookField(data.data);
+        .then((webhookData) => {
+          setWebhookField(webhookData.data);
         })
         .catch((err) => console.log(err));
+      axios('/getRecent')
+      .then((recentData) => {
+        if (recentData.data.length !== 0) {
+          setRecentsArray(recentsArray => [...recentsArray, recentData.data])
+        }
+      })
+      .catch((err) => console.log(err));
     }
   }, [isLoggedIn]);
 
@@ -100,13 +120,14 @@ const Home = ({ isLoggedIn }) => {
               resetSiteValue();
               resetDelimiterValue();
             } else {
+              handleRecentSave();
               setWebhookSubmitSuccessAlert(true)
               setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
             }
           })
           .catch((err) => console.log(err));
-        }
       }
+    }
   };
   const handleWebhookSave = () => {
     const webhookURL = webhookField;
@@ -116,26 +137,35 @@ const Home = ({ isLoggedIn }) => {
     } else {
       axios.post('/saveWebhook', {
         webhookURL,
-      });
+      })
+      .catch((err) => console.log(err));
       setWebhookSuccessAlert(true)
       setTimeout(() => setWebhookSuccessAlert(false), 2000);
       setIsEdit(!isEdit);
     }
   };
 
+  const handleRecentSave = () => {
+    axios.post('/saveRecent', {
+      siteValue,
+    })
+    .catch((err) => console.log(err));
+  }
+
+
   const handleWebhookEdit = () => {
     setIsEdit(!isEdit);
   };
   const handleWebhookDelete = () => {
     axios.put('/deleteWebhook')
-    .then((response) => {
-      if (response.data === 'Success') {
-        setWebhookField('')
-        setShowWebhookDeleteSuccessAlert(true)
-        setTimeout(() => setShowWebhookDeleteSuccessAlert(false), 2000);
-      }
-    })
-    .catch((err) => console.log(err));
+      .then((response) => {
+        if (response.data === 'Success') {
+          setWebhookField('')
+          setShowWebhookDeleteSuccessAlert(true)
+          setTimeout(() => setShowWebhookDeleteSuccessAlert(false), 2000);
+        }
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <>
@@ -145,6 +175,15 @@ const Home = ({ isLoggedIn }) => {
             <Form.Label>Insert Product URL</Form.Label>
             <Form.Control as="textarea" row={1} {...bindSiteValue} placeholder="Enter product URL" />
           </Form.Group>
+          {isLoggedIn && recentsArray.length !== 0
+            ? (
+              <RecentsTableContainer>
+                <Recents recents={recentsArray}
+                />
+              </RecentsTableContainer>
+
+            )
+            : ''}
           <Form.Group controlId="ControlSelect2">
             <Form.Label>Select delimiter format</Form.Label>
             <Form.Control {...bindDelimiterValue} as="select" className="select-form">
@@ -165,7 +204,7 @@ const Home = ({ isLoggedIn }) => {
           </Button>
         </StyledForm>
       </FormContainer>
-      <TableContainer>
+      <WebhookTableContainer>
         {isLoggedIn
           ? (
             <WebhookTable
@@ -178,7 +217,7 @@ const Home = ({ isLoggedIn }) => {
             />
           )
           : ''}
-      </TableContainer>
+      </WebhookTableContainer>
       <AlertContainer>
         <AlertStyle show={showAlert} variant="danger" transition>
           <Alert.Heading>

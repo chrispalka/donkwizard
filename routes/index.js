@@ -17,6 +17,8 @@ const {
   updateUserPassword,
   findUserByToken,
   deleteWebhook,
+  addRecent,
+  getRecent,
 } = require('../models/index');
 
 const { isAuthenticated } = require('../modules/auth');
@@ -116,6 +118,44 @@ router.get('/getWebhook', async (req, res) => {
       const webhook = await getWebhook(user.dataValues.id);
       if (webhook) {
         res.json(webhook.dataValues.webhook);
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+router.post('/saveRecent', async (req, res) => {
+  const { email } = req.user[0];
+  const { siteValue } = req.body;
+  try {
+    const user = await getUserName(email);
+    if (user) {
+      await addRecent(uuidv4(), siteValue, user.dataValues.id);
+    } else {
+      return false;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+router.get('/getRecent', async (req, res) => {
+  const recentsArray = [];
+  const { email } = req.user[0];
+  try {
+    const user = await getUserName(email);
+    if (user) {
+      const recents = await getRecent(user.dataValues.id);
+      recents.forEach((recent) => {
+        recentsArray.push(recent.dataValues.recents)
+      })
+      if (recentsArray.length !== 0) {
+        res.json(recentsArray);
       } else {
         return false;
       }

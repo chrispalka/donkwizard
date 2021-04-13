@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Webhook extends Model {
+  class Recent extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,13 +13,13 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  Webhook.init({
-    webhook: DataTypes.STRING(120),
-    user_id: DataTypes.INTEGER,
+  Recent.init({
+    recents: DataTypes.STRING(500),
+    user_id: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'Webhook',
+    modelName: 'Recent',
     timestamps: false
   });
-  return Webhook;
+  return Recent;
 };

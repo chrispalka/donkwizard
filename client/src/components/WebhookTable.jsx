@@ -9,7 +9,6 @@ import {
   faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
-const iconColor = ''
 
 const WebhookTable = ({
   isEdit,
