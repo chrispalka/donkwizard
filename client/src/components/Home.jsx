@@ -75,7 +75,7 @@ const RecentsTableContainer = styled(Container)`
 `;
 
 const Home = ({ isLoggedIn }) => {
-  const { value: siteValue, bind: bindSiteValue, reset: resetSiteValue } = useInput('');
+  const [siteValue, setSiteValue] = useState('');
   const { value: delimiterValue, bind: bindDelimiterValue, reset: resetDelimiterValue } = useInput('');
   const { value: webhookValue, bind: bindWebhookValue } = useInput('');
   const [isEdit, setIsEdit] = useState(false);
@@ -136,7 +136,6 @@ const Home = ({ isLoggedIn }) => {
             if (!response) {
               setShowVariantAlert(true);
               setTimeout(() => setShowVariantAlert(false), 2000);
-              resetSiteValue();
               resetDelimiterValue();
             } else {
               setVariantBox(response)
@@ -173,6 +172,14 @@ const Home = ({ isLoggedIn }) => {
       .catch((err) => console.log(err));
   }
 
+  const handleSiteValue = (e) => {
+    setSiteValue(e.target.value);
+  }
+  const handleRecentChange = (e) => {
+    setSiteValue(e.target.textContent)
+    document.getElementById('ControlTextarea1').innerText = e.target.textContent;
+  }
+
   const handleCopy = (variantBox) => {
     navigator.clipboard.writeText(variantBox)
   }
@@ -197,12 +204,14 @@ const Home = ({ isLoggedIn }) => {
         <StyledForm onSubmit={handleSubmit}>
           <Form.Group controlId="ControlTextarea1">
             <Form.Label>Insert Product URL</Form.Label>
-            <Form.Control as="textarea" row={1} {...bindSiteValue} placeholder="Enter product URL" />
+            <Form.Control as="textarea" row={1} onChange={handleSiteValue} value={siteValue} placeholder="Enter product URL" />
           </Form.Group>
           {isLoggedIn && recentsArray.length !== 0
             ? (
               <RecentsTableContainer>
-                <Recents recents={recentsArray}
+                <Recents
+                  recents={recentsArray}
+                  handleChange={handleRecentChange}
                 />
               </RecentsTableContainer>
 

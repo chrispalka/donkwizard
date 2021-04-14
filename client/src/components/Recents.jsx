@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 
-const Recents = ({ recents }) => (
+const Recents = ({ recents, handleChange }) => (
   <>
     <Table striped bordered>
       <thead>
@@ -12,7 +12,7 @@ const Recents = ({ recents }) => (
       <tbody>
         {recents.map((recent, i) => (
           <tr key={i}>
-            <td>
+            <td style={{ cursor: 'pointer' }} onClick={(e) => handleChange(e)}>
               {recent}
             </td>
           </tr>
