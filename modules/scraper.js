@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import webhook from './webhook';
 
-const scraper = (data, webhookURL, domain, handle, productLink, delimiter = ':') => {
+const scraper = (data, webhookURL, domain, handle, productLink, delimiter) => {
   delimiter = delimiter !== '' ? delimiter : ':';
   let productTitle, productImage;
   const delimitedResult = [];
