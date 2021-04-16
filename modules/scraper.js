@@ -3,8 +3,7 @@ import webhook from './webhook';
 
 const scraper = (data, webhookURL, domain, handle, productLink, delimiter = ':') => {
   delimiter = delimiter !== '' ? delimiter : ':';
-  let productTitle;
-  let productImage;
+  let productTitle, productImage;
   const delimitedResult = [];
   const result = [];
   const handleRegEx = new RegExp(`^${handle}$`);

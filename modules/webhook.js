@@ -9,7 +9,6 @@ const webHookMessage = (domain, webhookURL, productLink, message, title, image) 
     .addField('Variants', message, true)
     .addField('Site', domain, true)
     .setColor('#4071bf');
-
   Hook.send(msg);
 };
 

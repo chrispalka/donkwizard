@@ -9,6 +9,7 @@ import Alert from 'react-bootstrap/Alert';
 import styled from 'styled-components';
 import useInput from '../hooks/useInput';
 import scraper from '../../../modules/scraper';
+import domScraper from '../../../modules/domScraper';
 import {
   WebhookTable, Recents,
 } from '../layout/index';
@@ -134,9 +135,24 @@ const Home = ({ isLoggedIn }) => {
           ))
           .then((response) => {
             if (!response) {
-              setShowVariantAlert(true);
-              setTimeout(() => setShowVariantAlert(false), 2000);
-              resetDelimiterValue();
+              axios(productLink)
+              .then((productLinkData) => domScraper(
+                productLinkData.data, !isLoggedIn ? webhookValue : webhookField,
+                domain, productLink,
+                delimiterValue,
+                ))
+                .then((domScraperResponse) => {
+                if (!domScraperResponse) {
+                  setShowVariantAlert(true);
+                  setTimeout(() => setShowVariantAlert(false), 2000);
+                  resetDelimiterValue();
+                } else {
+                  setVariantBox(domScraperResponse)
+                  handleRecentSave();
+                  setWebhookSubmitSuccessAlert(true)
+                  setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
+                }
+              })
             } else {
               setVariantBox(response)
               handleRecentSave();
