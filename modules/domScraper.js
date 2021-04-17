@@ -1,19 +1,15 @@
 import webhook from './webhook';
-import notFound from '../client/src/assets/image-not-found.png';
-
 const cheerio = require('cheerio');
 
 const domScraper = (data, webhookURL, domain, productLink, delimiter) => {
   delimiter = delimiter !== '' ? delimiter : ':';
   const result = [];
   const delimitedResult = [];
-  let productTitle, productImage;
-  productImage = 'https://safetyaustraliagroup.com.au/wp-content/uploads/2019/05/image-not-found.png'
+  let productTitle;
   const html = data;
   const $ = cheerio.load(html, { xmlMode: false });
   const textNode = $('script:not([src])').map((i, x) => x.children[0]).filter((i, x) => x.data.match(/var meta/))
-  // const imgNode = $('img:is([src])').map((i, x) => x.children[0]).filter((i, x) => x.data.match(/product title/))
-  // console.log(imgNode)
+  const productImage = $('meta[property="og:image"]').attr('content')
   const productData = textNode[0].data
     .replace(/window./g, '')
     .replace(/ShopifyAnalytics/g, '')
