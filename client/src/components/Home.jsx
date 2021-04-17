@@ -72,6 +72,10 @@ const RecentsTableContainer = styled(Container)`
   }
   .table {
     color: #cfdbd5;
+    td:hover {
+      background-color: #f5cb5c;
+      color: black;
+    }
   }
 `;
 
