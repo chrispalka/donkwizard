@@ -36,8 +36,6 @@ const domScraper = (data, webhookURL, domain, productLink, delimiter) => {
       `${parsedProductData.product.variants[i].public_title} ${delimiter} ${parsedProductData.product.variants[i].id}`
     )
   }
-  console.log(result.join('\n'))
-
   if (result.length !== 0) {
     const message = (`\`\`\`${result.join('\n')}\`\`\``);
     const delimitedMessage = (`\`\`\`${delimitedResult.join('\n')}\`\`\``);
