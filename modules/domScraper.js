@@ -1,15 +1,18 @@
 import webhook from './webhook';
+
 const cheerio = require('cheerio');
 
 const domScraper = (data, webhookURL, domain, productLink, delimiter) => {
   delimiter = delimiter !== '' ? delimiter : ':';
   const result = [];
   const delimitedResult = [];
-  let productTitle;
+  let productTitle, productImage;
+  const notFound = 'https://safetyaustraliagroup.com.au/wp-content/uploads/2019/05/image-not-found.png'
   const html = data;
   const $ = cheerio.load(html, { xmlMode: false });
   const textNode = $('script:not([src])').map((i, x) => x.children[0]).filter((i, x) => x.data.match(/var meta/))
-  const productImage = $('meta[property="og:image"]').attr('content')
+  const imgNode = $('meta[property="og:image"]').attr('content')
+  productImage = imgNode !== undefined ? imgNode : notFound
   const productData = textNode[0].data
     .replace(/window./g, '')
     .replace(/ShopifyAnalytics/g, '')
@@ -26,7 +29,7 @@ const domScraper = (data, webhookURL, domain, productLink, delimiter) => {
     .replace(/}$/g, '')
 
     const parsedProductData = JSON.parse(productData);
-    productTitle = parsedProductData.product.variants[0].name
+    productTitle = parsedProductData.product.variants[0].name.slice(0, -4)
   for (let i = 0; i < parsedProductData.product.variants.length; i += 1) {
     result.push(parsedProductData.product.variants[i].id)
     delimitedResult.push(
