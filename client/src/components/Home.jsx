@@ -43,11 +43,13 @@ const StyledForm = styled(Form)`
 
 const AlertContainer = styled(Container)`
   margin-bottom: 5em;
-`;
+  `;
 
-const MessageContainer = styled(Container)`
+  const MessageContainer = styled(Container)`
+  padding-left: 1.8em;
+  padding-right: 1.8em;
   position: fixed;
-  width: 50%;
+  width: inherit;
   left: 0;
   right: 0;
 `;
