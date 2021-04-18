@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faClipboard
 } from '@fortawesome/free-solid-svg-icons';
+import e from 'cors';
 
 const axios = require('axios');
 
@@ -30,6 +31,7 @@ const StyledForm = styled(Form)`
   }
   .variant-box {
     width: 25%;
+    background-color: #cfdbd5;
   }
   .variant-title {
     margin-top: 1em;
@@ -41,7 +43,14 @@ const StyledForm = styled(Form)`
 `;
 
 const AlertContainer = styled(Container)`
+  margin-bottom: 5em;
+`;
+
+const MessageContainer = styled(Container)`
+  position: fixed;
   width: 50%;
+  left: 0;
+  right: 0;
 `;
 
 const AlertStyle = styled(Alert)`
@@ -88,6 +97,7 @@ const Home = ({ isLoggedIn }) => {
   const [recentsArray, setRecentsArray] = useState([]);
   const [showUrlAlert, setShowUrlAlert] = useState(false);
   const [showVariantAlert, setShowVariantAlert] = useState(false);
+  const [showCopiedAlert, setShowCopiedAlert] = useState(false);
   const [showWebhookAlert, setShowWebhookAlert] = useState(false);
   const [showWebhookSuccessAlert, setWebhookSuccessAlert] = useState(false);
   const [showWebhookSubmitSuccessAlert, setWebhookSubmitSuccessAlert] = useState(false);
@@ -117,7 +127,10 @@ const Home = ({ isLoggedIn }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (webhookValue.length !== 120 && webhookField.length !== 120) {
+    if (siteValue.length === 0) {
+      setShowUrlAlert(true);
+      setTimeout(() => setShowUrlAlert(false), 2000);
+    } else if (webhookValue.length !== 120 && webhookField.length !== 120) {
       setShowWebhookAlert(true);
       setTimeout(() => setShowWebhookAlert(false), 2000);
     } else {
@@ -126,7 +139,7 @@ const Home = ({ isLoggedIn }) => {
       const domain = valueArray[2];
       const handle = valueArray[valueArray.length - 1];
       const url = `https://${domain}/products.json`;
-      if (domain !== undefined || siteValue.length === 0) {
+      if (domain !== undefined) {
         axios(url)
           .then((data) => {
             scraper(
@@ -202,6 +215,8 @@ const Home = ({ isLoggedIn }) => {
   }
 
   const handleCopy = (variantBox) => {
+    setShowCopiedAlert(true)
+    setTimeout(() => setShowCopiedAlert(false), 2000);
     navigator.clipboard.writeText(variantBox)
   }
 
@@ -221,6 +236,59 @@ const Home = ({ isLoggedIn }) => {
   };
   return (
     <>
+      <AlertContainer>
+        <MessageContainer>
+          <AlertStyle show={showUrlAlert} variant="danger" transition>
+            <Alert.Heading>
+              <p>
+                Please enter a valid URL
+            </p>
+            </Alert.Heading>
+          </AlertStyle>
+          <AlertStyle show={showCopiedAlert} variant="success" transition>
+            <Alert.Heading>
+              <p>
+                Copied!
+            </p>
+            </Alert.Heading>
+          </AlertStyle>
+          <AlertStyle show={showVariantAlert} variant="danger" transition>
+            <Alert.Heading>
+              <p>
+                No Variants Found
+            </p>
+            </Alert.Heading>
+          </AlertStyle>
+          <AlertStyle show={showWebhookAlert} variant="danger" transition>
+            <Alert.Heading>
+              <p>
+                Invalid Webhook URL
+            </p>
+            </Alert.Heading>
+          </AlertStyle>
+          <AlertStyle show={showWebhookSuccessAlert} variant="success" transition>
+            <Alert.Heading>
+              <p>
+                Webhook Saved
+            </p>
+            </Alert.Heading>
+          </AlertStyle>
+          <AlertStyle show={showWebhookSubmitSuccessAlert} variant="success" transition>
+            <Alert.Heading>
+              <p>
+                Webhook sent!
+            </p>
+            </Alert.Heading>
+          </AlertStyle>
+          <AlertStyle show={showWebhookDeleteSuccessAlert} variant="success" transition>
+            <Alert.Heading>
+              <p>
+                Webhook Deleted
+            </p>
+            </Alert.Heading>
+          </AlertStyle>
+        </MessageContainer>
+      </AlertContainer>
       <FormContainer>
         <StyledForm onSubmit={handleSubmit}>
           <Form.Group controlId="ControlTextarea1">
@@ -246,7 +314,7 @@ const Home = ({ isLoggedIn }) => {
               <option value="-">-</option>
             </Form.Control>
             <Form.Label className="variant-title">Variants</Form.Label>
-            <Form.Control as="textarea" className="variant-box" rows="12" defaultValue={variantBox}>
+            <Form.Control as="textarea" className="variant-box" rows="12" disabled defaultValue={variantBox}>
             </Form.Control>
             <FontAwesomeIcon
               icon={faClipboard}
@@ -280,50 +348,6 @@ const Home = ({ isLoggedIn }) => {
           )
           : ''}
       </WebhookTableContainer>
-      <AlertContainer>
-        <AlertStyle show={showUrlAlert} variant="danger" transition>
-          <Alert.Heading>
-            <p>
-              Please enter a valid URL
-            </p>
-          </Alert.Heading>
-        </AlertStyle>
-        <AlertStyle show={showVariantAlert} variant="danger" transition>
-          <Alert.Heading>
-            <p>
-              No Variants Found
-            </p>
-          </Alert.Heading>
-        </AlertStyle>
-        <AlertStyle show={showWebhookAlert} variant="danger" transition>
-          <Alert.Heading>
-            <p>
-              Invalid Webhook URL
-            </p>
-          </Alert.Heading>
-        </AlertStyle>
-        <AlertStyle show={showWebhookSuccessAlert} variant="success" transition>
-          <Alert.Heading>
-            <p>
-              Webhook Saved
-            </p>
-          </Alert.Heading>
-        </AlertStyle>
-        <AlertStyle show={showWebhookSubmitSuccessAlert} variant="success" transition>
-          <Alert.Heading>
-            <p>
-              Webhook sent!
-            </p>
-          </Alert.Heading>
-        </AlertStyle>
-        <AlertStyle show={showWebhookDeleteSuccessAlert} variant="success" transition>
-          <Alert.Heading>
-            <p>
-              Webhook Deleted
-            </p>
-          </Alert.Heading>
-        </AlertStyle>
-      </AlertContainer>
     </>
   );
 };

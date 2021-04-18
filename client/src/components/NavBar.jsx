@@ -38,7 +38,6 @@ const NavContainer = styled(Container)`
     padding: 0;
     color: #f5cb5c;
   }
-  margin-bottom: 4em;
   .dropdown-menu {
     background-color: #333533;
   }

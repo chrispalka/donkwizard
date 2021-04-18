@@ -24,10 +24,13 @@ const axios = require('axios');
 const Global = createGlobalStyle`
   body {
     background-color: #242423;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   `;
 
-  const MainContainer = styled(Container)`
+const MainContainer = styled(Container)`
 `;
 
 const FooterLinks = [
