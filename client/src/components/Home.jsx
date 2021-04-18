@@ -17,7 +17,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faClipboard
 } from '@fortawesome/free-solid-svg-icons';
-import e from 'cors';
 
 const axios = require('axios');
 
