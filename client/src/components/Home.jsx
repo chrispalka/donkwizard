@@ -86,7 +86,7 @@ const Home = ({ isLoggedIn }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [webhookField, setWebhookField] = useState('');
   const [recentsArray, setRecentsArray] = useState([]);
-  const [showAlert, setShowAlert] = useState(false);
+  const [showUrlAlert, setShowUrlAlert] = useState(false);
   const [showVariantAlert, setShowVariantAlert] = useState(false);
   const [showWebhookAlert, setShowWebhookAlert] = useState(false);
   const [showWebhookSuccessAlert, setWebhookSuccessAlert] = useState(false);
@@ -111,17 +111,13 @@ const Home = ({ isLoggedIn }) => {
             .catch((err) => console.log(err));
         })
         .catch((err) => console.log(err));
-      }
+    }
   }, [isLoggedIn, recentsArray]);
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (siteValue.length === 0) {
-      setShowAlert(true);
-      setTimeout(() => setShowAlert(false), 2000);
-      console.log(webhookValue.length)
-    } else if (webhookValue.length !== 120 && webhookField.length !== 120) {
+    if (webhookValue.length !== 120 && webhookField.length !== 120) {
       setShowWebhookAlert(true);
       setTimeout(() => setShowWebhookAlert(false), 2000);
     } else {
@@ -130,33 +126,35 @@ const Home = ({ isLoggedIn }) => {
       const domain = valueArray[2];
       const handle = valueArray[valueArray.length - 1];
       const url = `https://${domain}/products.json`;
-      if (domain !== undefined) {
+      if (domain !== undefined || siteValue.length === 0) {
         axios(url)
-          .then((data) => scraper(
-            data.data, !isLoggedIn ? webhookValue : webhookField,
-            domain, handle, productLink,
-            delimiterValue,
-          ))
+          .then((data) => {
+            scraper(
+              data.data, !isLoggedIn ? webhookValue : webhookField,
+              domain, handle, productLink,
+              delimiterValue,
+            )
+          })
           .then((response) => {
             if (!response) {
               axios(productLink)
-              .then((productLinkData) => domScraper(
-                productLinkData.data, !isLoggedIn ? webhookValue : webhookField,
-                domain, productLink,
-                delimiterValue,
+                .then((productLinkData) => domScraper(
+                  productLinkData.data, !isLoggedIn ? webhookValue : webhookField,
+                  domain, productLink,
+                  delimiterValue,
                 ))
                 .then((domScraperResponse) => {
-                if (!domScraperResponse) {
-                  setShowVariantAlert(true);
-                  setTimeout(() => setShowVariantAlert(false), 2000);
-                  resetDelimiterValue();
-                } else {
-                  setVariantBox(domScraperResponse)
-                  handleRecentSave();
-                  setWebhookSubmitSuccessAlert(true)
-                  setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
-                }
-              })
+                  if (!domScraperResponse) {
+                    setShowVariantAlert(true);
+                    setTimeout(() => setShowVariantAlert(false), 2000);
+                    resetDelimiterValue();
+                  } else {
+                    setVariantBox(domScraperResponse)
+                    handleRecentSave();
+                    setWebhookSubmitSuccessAlert(true)
+                    setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
+                  }
+                })
             } else {
               setVariantBox(response)
               handleRecentSave();
@@ -165,6 +163,9 @@ const Home = ({ isLoggedIn }) => {
             }
           })
           .catch((err) => console.log(err));
+      } else {
+        setShowUrlAlert(true);
+        setTimeout(() => setShowUrlAlert(false), 2000);
       }
     }
   };
@@ -280,7 +281,7 @@ const Home = ({ isLoggedIn }) => {
           : ''}
       </WebhookTableContainer>
       <AlertContainer>
-        <AlertStyle show={showAlert} variant="danger" transition>
+        <AlertStyle show={showUrlAlert} variant="danger" transition>
           <Alert.Heading>
             <p>
               Please enter a valid URL
