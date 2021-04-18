@@ -29,11 +29,12 @@ const domScraper = (data, webhookURL, domain, productLink, delimiter) => {
     .replace(/}$/g, '')
 
     const parsedProductData = JSON.parse(productData);
+    console.log(parsedProductData)
     productTitle = parsedProductData.product.variants[0].name.slice(0, -4)
   for (let i = 0; i < parsedProductData.product.variants.length; i += 1) {
     result.push(parsedProductData.product.variants[i].id)
     delimitedResult.push(
-      `${parsedProductData.product.variants[i].public_title} ${delimiter} ${parsedProductData.product.variants[i].id}`
+      `${parsedProductData.product.variants[i].public_title.replace(/[^0-9.]+/g, '')} ${delimiter} ${parsedProductData.product.variants[i].id}`
     )
   }
   if (result.length !== 0) {
