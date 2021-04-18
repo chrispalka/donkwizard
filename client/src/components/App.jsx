@@ -2,12 +2,11 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
+  useLocation,
 } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEnvelopeSquare,
 } from '@fortawesome/free-solid-svg-icons';
@@ -47,6 +46,7 @@ const FooterLinks = [
 ]
 
 const App = () => {
+  const location = useLocation();
   const [passwordUpdated, setPasswordUpdated] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -68,8 +68,7 @@ const App = () => {
     <>
       <Global />
       <MainContainer>
-        <Router>
-          <NavBar isLoggedIn={isLoggedIn} />
+          <NavBar isLoggedIn={isLoggedIn} location={location} />
           <Switch>
             <Route path="/login" exact component={() => <Login />}>
               {isLoggedIn ? <Redirect to="/" /> : <Login />}
@@ -81,7 +80,6 @@ const App = () => {
               {passwordUpdated ? <Redirect to="/login" /> : <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}
             </Route>
           </Switch>
-        </Router>
         <Footer links={FooterLinks} />
       </MainContainer>
     </>

@@ -50,7 +50,7 @@ const NavContainer = styled(Container)`
 
 `;
 
-const NavBar = ({ isLoggedIn }) => {
+const NavBar = ({ isLoggedIn, location }) => {
   const [currentUser, setCurrentUser] = useState('');
   const formatName = (email) => {
     let name = email.split('@')[0]
@@ -70,9 +70,11 @@ const NavBar = ({ isLoggedIn }) => {
         <Navbar.Brand href="/" className="nav-title">DonkWizard</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-
           <Nav className="ml-auto">
-            <Link to="/" className="nav-link-custom">Home</Link>
+          {location.pathname !== '/' ? (
+              <Link to="/" className="nav-link-custom">Home</Link>
+            )
+            : ''}
             {!isLoggedIn ? (
               <Link to="/login" className="nav-link-custom">Login</Link>
             )
