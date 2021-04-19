@@ -172,8 +172,7 @@ router.get('/getRecent', async (req, res) => {
 router.post('/forgotPassword', async (req, res) => {
   const { emailValue } = req.body;
   if (!emailValue) {
-    res.sendStatus(400);
-    console.log('No email exists');
+    res.json('Invalid');
   } else {
     const user = await getUserName(emailValue);
     if (user) {

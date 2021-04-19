@@ -37,16 +37,22 @@ const StyledForm = styled(Form)`
 const ForgotPassword = () => {
   const { value: emailValue, bind: bindEmailValue, reset: resetEmailValue } = useInput('');
   const [showEmailSuccess, setShowEmailSuccess] = useState(false);
+  const [showEmailFailure, setShowEmailFailure] = useState(false);
   const sendEmail = (e) => {
     e.preventDefault()
-    axios.post('/forgotPassword', {
-      emailValue,
-    })
-      .then((response) => console.log(response.data))
-      .catch((err) => console.log(err));
-    setShowEmailSuccess(true);
-    setTimeout(() => setShowEmailSuccess(false), 2000);
-    resetEmailValue();
+    if (emailValue.length === 0) {
+      setShowEmailFailure(true)
+      setTimeout(() => setShowEmailFailure(false), 2000);
+    } else {
+      axios.post('/forgotPassword', {
+        emailValue,
+      })
+        .then((response) => console.log(response.data))
+        .catch((err) => console.log(err));
+      setShowEmailSuccess(true);
+      setTimeout(() => setShowEmailSuccess(false), 2000);
+      resetEmailValue();
+    }
   };
   return (
     <>
@@ -65,7 +71,14 @@ const ForgotPassword = () => {
         <AlertStyle show={showEmailSuccess} variant="success" transition>
           <Alert.Heading>
             <p>
-              Recovery Email Sent!
+              Please check your email
+            </p>
+          </Alert.Heading>
+        </AlertStyle>
+        <AlertStyle show={showEmailFailure} variant="danger" transition>
+          <Alert.Heading>
+            <p>
+              Please enter a valid email
             </p>
           </Alert.Heading>
         </AlertStyle>

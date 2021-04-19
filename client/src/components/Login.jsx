@@ -59,22 +59,27 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    axios.post('login', {
-      email: emailValue.toLowerCase(),
-      password: passwordValue,
-    })
-      .then((response) => {
-        if (response.data !== 'Success') {
-          setShowAlert(true);
-          setTimeout(() => setShowAlert(false), 2000);
-        } else {
-          window.location = '/';
-          resetEmailValue();
-          resetPasswordValue();
-        }
+    if (emailValue.length === 0 || passwordValue.length === 0) {
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 2000);
+    } else {
+      axios.post('login', {
+        email: emailValue.toLowerCase(),
+        password: passwordValue,
       })
-      .catch((err) => console.log(err));
-  };
+        .then((response) => {
+          if (response.data !== 'Success') {
+            setShowAlert(true);
+            setTimeout(() => setShowAlert(false), 2000);
+          } else {
+            window.location = '/';
+            resetEmailValue();
+            resetPasswordValue();
+          }
+        })
+        .catch((err) => console.log(err));
+    };
+  }
 
   return (
     <>

@@ -39,28 +39,32 @@ const Register = () => {
   const { value: passwordValue, bind: bindPasswordValue, reset: resetPasswordValue } = useInput('');
   const [showAlert, setShowAlert] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = (e) => {
     e.preventDefault();
-    axios.post('/register', {
-      email: emailValue,
-      password: passwordValue,
-    })
-      .then((response) => {
-        if (response.data !== 'Success') {
-          setShowAlert(true);
-          setTimeout(() => setShowAlert(false), 2000);
-        } else {
-          setIsLoading(true)
-          setShowSuccessAlert(true);
-          setTimeout(() => setShowSuccessAlert(false), 2000)
-          setTimeout(() => window.location = '/login', 2000)
-        }
-        resetEmailValue();
-        resetPasswordValue();
+    if (emailValue.length === 0 || passwordValue.length === 0) {
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 2000);
+    } else {
+      axios.post('/register', {
+        email: emailValue,
+        password: passwordValue,
       })
-      .catch((err) => console.log(err));
+        .then((response) => {
+          if (response.data !== 'Success') {
+            setShowAlert(true);
+            setTimeout(() => setShowAlert(false), 2000);
+          } else {
+            setIsLoading(true)
+            setShowSuccessAlert(true);
+            setTimeout(() => setShowSuccessAlert(false), 2000)
+            setTimeout(() => window.location = '/login', 2000)
+          }
+          resetEmailValue();
+          resetPasswordValue();
+        })
+        .catch((err) => console.log(err));
+    }
   };
   return (
     <>
@@ -83,7 +87,7 @@ const Register = () => {
         <AlertStyle show={showAlert} variant="danger" transition>
           <Alert.Heading>
             <p>
-              Email already exists!
+              Credentials Invalid
             </p>
           </Alert.Heading>
         </AlertStyle>
