@@ -212,7 +212,6 @@ const Home = ({ isLoggedIn }) => {
   }
   const handleRecentChange = (e) => {
     setSiteValue(e.target.id)
-    console.log(e.target.id)
     document.getElementById('ControlTextarea1').innerText = e.target.id;
   }
 
