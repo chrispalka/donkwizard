@@ -12,8 +12,8 @@ const Recents = ({ recents, handleChange }) => (
       <tbody>
         {recents.map((recent, i) => (
           <tr key={i}>
-            <td style={{ cursor: 'pointer' }} onClick={(e) => handleChange(e)}>
-              {recent}
+            <td title={recent} id={recent} style={{ cursor: 'pointer' }} onClick={(e) => handleChange(e)}>
+              {recent.slice(0, 110)}...
             </td>
           </tr>
         ))}

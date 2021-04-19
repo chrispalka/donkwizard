@@ -211,8 +211,9 @@ const Home = ({ isLoggedIn }) => {
     setSiteValue(e.target.value);
   }
   const handleRecentChange = (e) => {
-    setSiteValue(e.target.textContent)
-    document.getElementById('ControlTextarea1').innerText = e.target.textContent;
+    setSiteValue(e.target.id)
+    console.log(e.target.id)
+    document.getElementById('ControlTextarea1').innerText = e.target.id;
   }
 
   const handleCopy = (variantBox) => {
