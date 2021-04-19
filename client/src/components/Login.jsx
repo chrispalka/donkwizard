@@ -13,6 +13,7 @@ const axios = require('axios');
 
 const FormContainer = styled(Container)`
   width: 50%;
+  margin-top: 10em;
   .form-label {
     color: #cfdbd5;
   }
@@ -39,6 +40,7 @@ const StyledForm = styled(Form)`
 `;
 
 const AlertContainer = styled(Container)`
+  margin-top: 2em;
   width: 50%;
 `;
 

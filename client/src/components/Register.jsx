@@ -12,6 +12,7 @@ const axios = require('axios');
 
 const FormContainer = styled(Container)`
   width: 50%;
+  margin-top: 10em;
   .form-label {
     color: #cfdbd5;
   }
@@ -21,6 +22,7 @@ const StyledForm = styled(Form)`
 `;
 
 const AlertContainer = styled(Container)`
+  margin-top: 2em;
   width: 50%;
 `;
 
@@ -36,6 +38,8 @@ const Register = () => {
   const { value: emailValue, bind: bindEmailValue, reset: resetEmailValue } = useInput('');
   const { value: passwordValue, bind: bindPasswordValue, reset: resetPasswordValue } = useInput('');
   const [showAlert, setShowAlert] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -48,7 +52,10 @@ const Register = () => {
           setShowAlert(true);
           setTimeout(() => setShowAlert(false), 2000);
         } else {
-          window.location = '/login';
+          setIsLoading(true)
+          setShowSuccessAlert(true);
+          setTimeout(() => setShowSuccessAlert(false), 2000)
+          setTimeout(() => window.location = '/login', 2000)
         }
         resetEmailValue();
         resetPasswordValue();
@@ -77,6 +84,13 @@ const Register = () => {
           <Alert.Heading>
             <p>
               Email already exists!
+            </p>
+          </Alert.Heading>
+        </AlertStyle>
+        <AlertStyle show={showSuccessAlert} variant="success" transition>
+          <Alert.Heading>
+            <p>
+              Success! You will now be redirected to the login page
             </p>
           </Alert.Heading>
         </AlertStyle>

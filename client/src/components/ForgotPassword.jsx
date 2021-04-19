@@ -11,6 +11,7 @@ const axios = require('axios');
 
 const FormContainer = styled(Container)`
   width: 50%;
+  margin-top: 10em;
   .form-label {
     color: #cfdbd5;
   }

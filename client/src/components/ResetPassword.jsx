@@ -14,6 +14,7 @@ const axios = require('axios');
 
 const FormContainer = styled(Container)`
   width: 50%;
+  margin-top: 10em;
   .form-label {
     color: #cfdbd5;
   }
@@ -98,7 +99,7 @@ const ResetPassword = ({ hasUpdatedPassword }) => {
         <AlertStyle show={showUpdateSuccess} variant="success" transition>
           <Alert.Heading>
             <p>
-              Password Successfully Updated!
+              Password Successfully Updated! Redirecting to login page
             </p>
           </Alert.Heading>
         </AlertStyle>
