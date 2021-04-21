@@ -22,8 +22,9 @@ const axios = require('axios');
 
 const Global = createGlobalStyle`
   body {
+    margin: 0;
+    padding-bottom: 50px;
     background-color: #242423;
-    align-items: center;
   }
   `;
 
@@ -68,18 +69,18 @@ const App = () => {
     <>
       <Global />
       <MainContainer>
-          <NavBar isLoggedIn={isLoggedIn} location={location} />
-          <Switch>
-            <Route path="/login" exact component={() => <Login />}>
-              {isLoggedIn ? <Redirect to="/" /> : <Login />}
-            </Route>
-            <Route path="/register" exact component={() => <Register />} />
-            <Route path="/" exact component={() => <Home isLoggedIn={isLoggedIn} />} />
-            <Route path="/forgotpassword" exact component={() => <ForgotPassword />} />
-            <Route path="/resetpassword/:token" exact component={() => <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}>
-              {passwordUpdated ? <Redirect to="/login" /> : <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}
-            </Route>
-          </Switch>
+        <NavBar isLoggedIn={isLoggedIn} location={location} />
+        <Switch>
+          <Route path="/login" exact component={() => <Login />}>
+            {isLoggedIn ? <Redirect to="/" /> : <Login />}
+          </Route>
+          <Route path="/register" exact component={() => <Register />} />
+          <Route path="/" exact component={() => <Home isLoggedIn={isLoggedIn} />} />
+          <Route path="/forgotpassword" exact component={() => <ForgotPassword />} />
+          <Route path="/resetpassword/:token" exact component={() => <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}>
+            {passwordUpdated ? <Redirect to="/login" /> : <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}
+          </Route>
+        </Switch>
         <Footer links={FooterLinks} />
       </MainContainer>
     </>

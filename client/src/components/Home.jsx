@@ -65,11 +65,18 @@ const AlertStyle = styled(Alert)`
 const WebhookTableContainer = styled(Container)`
   margin-top: 1em;
   font-family: 'Roboto';
+  margin-bottom: 50px;
   .svg-inline--fa {
     margin-right: 0.5em;
   }
   .table {
     color: #cfdbd5;
+  }
+  .table > tbody > tr > td {
+    word-wrap: break-word;
+    min-width: 160px;
+    max-width: 160px;
+    white-space: normal;
   }
 `;
 
