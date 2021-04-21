@@ -130,7 +130,7 @@ const Home = ({ isLoggedIn }) => {
         })
         .catch((err) => console.log(err));
     }
-  }, [isLoggedIn, recentsArray]);
+  }, []);
 
 
   const handleSubmit = (e) => {
