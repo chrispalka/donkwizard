@@ -55,7 +55,6 @@ const Register = () => {
             setShowAlert(true);
             setTimeout(() => setShowAlert(false), 2000);
           } else {
-            setIsLoading(true)
             setShowSuccessAlert(true);
             setTimeout(() => setShowSuccessAlert(false), 2000)
             setTimeout(() => window.location = '/login', 2000)
