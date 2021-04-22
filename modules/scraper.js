@@ -35,10 +35,12 @@ const scraper = (data, webhookURL, domain, handle, productLink, delimiter) => {
     });
   });
   if (result.length !== 0) {
-    const delimitedMessage = (`\`\`\`${delimitedResult.join('\n')}\`\`\``);
-    const message = (`\`\`\`${result.join('\n')}\`\`\``);
-    webhook(domain, webhookURL, productLink, delimitedMessage, productTitle, productImage);
-    webhook(domain, webhookURL, productLink, message, productTitle, productImage);
+    if (webhookURL.length !== 0) {
+      const delimitedMessage = (`\`\`\`${delimitedResult.join('\n')}\`\`\``);
+      const message = (`\`\`\`${result.join('\n')}\`\`\``);
+      webhook(domain, webhookURL, productLink, delimitedMessage, productTitle, productImage);
+      webhook(domain, webhookURL, productLink, message, productTitle, productImage);
+    }
     return result.join('\n');
   } else {
     return false;

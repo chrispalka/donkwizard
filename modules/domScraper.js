@@ -37,10 +37,12 @@ const domScraper = (data, webhookURL, domain, productLink, delimiter) => {
     )
   }
   if (result.length !== 0) {
-    const message = (`\`\`\`${result.join('\n')}\`\`\``);
-    const delimitedMessage = (`\`\`\`${delimitedResult.join('\n')}\`\`\``);
-    webhook(domain, webhookURL, productLink, delimitedMessage, productTitle, productImage);
-    webhook(domain, webhookURL, productLink, message, productTitle, productImage);
+    if (webhookURL.length !== 0) {
+      const message = (`\`\`\`${result.join('\n')}\`\`\``);
+      const delimitedMessage = (`\`\`\`${delimitedResult.join('\n')}\`\`\``);
+      webhook(domain, webhookURL, productLink, delimitedMessage, productTitle, productImage);
+      webhook(domain, webhookURL, productLink, message, productTitle, productImage);
+    }
     return result.join('\n');
   } else {
     return false;
@@ -48,7 +50,3 @@ const domScraper = (data, webhookURL, domain, productLink, delimiter) => {
 }
 
 export default domScraper;
-
-
-// var textNode = $('body > script').map((i, x) => x.children[0])
-// .filter((i, x) => x && x.data.match(/jwplayer/)).get(0);

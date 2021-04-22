@@ -45,7 +45,7 @@ const AlertContainer = styled(Container)`
   margin-bottom: 5em;
   `;
 
-  const MessageContainer = styled(Container)`
+const MessageContainer = styled(Container)`
   padding-left: 1.8em;
   padding-right: 1.8em;
   position: fixed;
@@ -138,7 +138,11 @@ const Home = ({ isLoggedIn }) => {
     if (siteValue.length === 0) {
       setShowUrlAlert(true);
       setTimeout(() => setShowUrlAlert(false), 2000);
-    } else if (webhookValue.length !== 120 && webhookField.length !== 120) {
+    } else if (
+      (webhookValue.length !== 120 && webhookField.length !== 120)
+      &&
+      (webhookValue.length !== 0 && webhookField.length !== 0)
+    ) {
       setShowWebhookAlert(true);
       setTimeout(() => setShowWebhookAlert(false), 2000);
     } else {
