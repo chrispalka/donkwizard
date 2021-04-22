@@ -3,7 +3,7 @@ import webhook from './webhook';
 
 const scraper = (data, webhookURL, domain, handle, productLink, delimiter) => {
   delimiter = delimiter !== '' ? delimiter : ':';
-  let productTitle, productImage;
+  let productTitle, productImage, productPrice;
   const delimitedResult = [];
   const result = [];
   const handleRegEx = new RegExp(`^${handle}$`);
@@ -14,6 +14,7 @@ const scraper = (data, webhookURL, domain, handle, productLink, delimiter) => {
         if (product.handle.match(handleRegEx)) {
           productTitle = product.title;
           productImage = product.images[0].src;
+          productPrice = variant.price;
           if ((variant.option1).match(/[0-9]/) && domain !== 'bdgastore.com') {
             delimitedResult.push(
               `${variant.option1.slice(0, 7).replace(variantRegEx, '')} ${delimiter} ${variant.id}`,
@@ -41,7 +42,13 @@ const scraper = (data, webhookURL, domain, handle, productLink, delimiter) => {
       webhook(domain, webhookURL, productLink, delimitedMessage, productTitle, productImage);
       webhook(domain, webhookURL, productLink, message, productTitle, productImage);
     }
-    return result.join('\n');
+
+    return {
+      variants: result.join('\n'),
+      productImage,
+      productTitle,
+      productPrice,
+    }
   } else {
     return false;
   }

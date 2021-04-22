@@ -6,7 +6,7 @@ const domScraper = (data, webhookURL, domain, productLink, delimiter) => {
   delimiter = delimiter !== '' ? delimiter : ':';
   const result = [];
   const delimitedResult = [];
-  let productTitle, productImage;
+  let productTitle, productImage, productPrice;
   const notFound = 'https://safetyaustraliagroup.com.au/wp-content/uploads/2019/05/image-not-found.png'
   const html = data;
   const $ = cheerio.load(html, { xmlMode: false });
@@ -29,7 +29,8 @@ const domScraper = (data, webhookURL, domain, productLink, delimiter) => {
     .replace(/}$/g, '')
 
   const parsedProductData = JSON.parse(productData);
-  productTitle = parsedProductData.product.variants[0].name.slice(0, -4)
+  productTitle = parsedProductData.product.variants[0].name.slice(0, -4);
+  productPrice = parsedProductData.product.variants[0].price * .10 * .10
   for (let i = 0; i < parsedProductData.product.variants.length; i += 1) {
     result.push(parsedProductData.product.variants[i].id)
     delimitedResult.push(
@@ -43,10 +44,16 @@ const domScraper = (data, webhookURL, domain, productLink, delimiter) => {
       webhook(domain, webhookURL, productLink, delimitedMessage, productTitle, productImage);
       webhook(domain, webhookURL, productLink, message, productTitle, productImage);
     }
-    return result.join('\n');
+    return {
+      variants: result.join('\n'),
+      productImage,
+      productTitle,
+      productPrice,
+    }
   } else {
     return false;
   }
 }
 
 export default domScraper;
+

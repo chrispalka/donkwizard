@@ -11,11 +11,12 @@ import useInput from '../hooks/useInput';
 import scraper from '../../../modules/scraper';
 import domScraper from '../../../modules/domScraper';
 import {
-  WebhookTable, Recents,
+  WebhookTable, Recents, ProductInfo
 } from '../layout/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faClipboard
+  faClipboard,
+  faCircleNotch,
 } from '@fortawesome/free-solid-svg-icons';
 
 const axios = require('axios');
@@ -28,17 +29,29 @@ const StyledForm = styled(Form)`
   .select-form {
     width: 5%;
   }
-  .variant-box {
-    width: 25%;
-    background-color: #cfdbd5;
-  }
-  .variant-title {
-    margin-top: 1em;
-  }
   .form-label {
     color: #cfdbd5;
     font-family: 'Roboto';
   }
+`;
+
+const VariantContainer = styled(Container)`
+  margin-bottom: 75px;
+  padding-left: 0;
+  .variant-box {
+    border-radius: 5px;
+    width: 100%;
+    background-color: #cfdbd5;
+  }
+  .variant-title {
+    color: #cfdbd5;
+    font-family: 'Roboto';
+    display: block;
+    margin-top: 1em;
+  }
+`
+const VariantProductInfoWrapper = styled(Container)`
+  display: flex;
 `;
 
 const AlertContainer = styled(Container)`
@@ -63,9 +76,10 @@ const AlertStyle = styled(Alert)`
 `;
 
 const WebhookTableContainer = styled(Container)`
+  padding: 0;
   margin-top: 1em;
   font-family: 'Roboto';
-  margin-bottom: 50px;
+  margin-bottom: 35px;
   .svg-inline--fa {
     margin-right: 0.5em;
   }
@@ -96,6 +110,22 @@ const RecentsTableContainer = styled(Container)`
   }
 `;
 
+const ProductTableContainer = styled(Container)`
+padding-right: 0;
+  .table {
+    color: #cfdbd5;
+  }
+  .table th, .table td {
+    border: none;
+  }
+  .product-title {
+    color: #cfdbd5;
+    font-family: 'Roboto';
+    display: block;
+    margin-top: 1em;
+  }
+`;
+
 const Home = ({ isLoggedIn }) => {
   const [siteValue, setSiteValue] = useState('');
   const { value: delimiterValue, bind: bindDelimiterValue, reset: resetDelimiterValue } = useInput('');
@@ -111,6 +141,10 @@ const Home = ({ isLoggedIn }) => {
   const [showWebhookSubmitSuccessAlert, setWebhookSubmitSuccessAlert] = useState(false);
   const [showWebhookDeleteSuccessAlert, setShowWebhookDeleteSuccessAlert] = useState(false);
   const [variantBox, setVariantBox] = useState('');
+  const [productImage, setProductImage] = useState('');
+  const [productTitle, setProductTitle] = useState('');
+  const [productPrice, setProductPrice] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
 
   useEffect(() => {
@@ -142,58 +176,67 @@ const Home = ({ isLoggedIn }) => {
       (webhookValue.length !== 120 && webhookField.length !== 120)
       &&
       (webhookValue.length !== 0 && webhookField.length !== 0)
-    ) {
-      setShowWebhookAlert(true);
-      setTimeout(() => setShowWebhookAlert(false), 2000);
-    } else {
-      const productLink = siteValue;
+      ) {
+        setShowWebhookAlert(true);
+        setTimeout(() => setShowWebhookAlert(false), 2000);
+      } else {
+      setIsLoading(true);
+      const productLink = siteValue
       const valueArray = siteValue.split('/');
       const domain = valueArray[2];
-      const handle = valueArray[valueArray.length - 1];
+      const handle = valueArray[valueArray.length - 1]
       const url = `https://${domain}/products.json`;
       if (domain !== undefined) {
-        axios(url)
-          .then((data) => {
-            scraper(
-              data.data, !isLoggedIn ? webhookValue : webhookField,
-              domain, handle, productLink,
-              delimiterValue,
-            )
-          })
-          .then((response) => {
-            if (!response) {
-              axios(productLink)
-                .then((productLinkData) => domScraper(
-                  productLinkData.data, !isLoggedIn ? webhookValue : webhookField,
-                  domain, productLink,
-                  delimiterValue,
-                ))
-                .then((domScraperResponse) => {
-                  if (!domScraperResponse) {
-                    setShowVariantAlert(true);
-                    setTimeout(() => setShowVariantAlert(false), 2000);
-                    resetDelimiterValue();
-                  } else {
-                    setVariantBox(domScraperResponse)
-                    handleRecentSave();
-                    setWebhookSubmitSuccessAlert(true)
-                    setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
-                  }
-                })
-            } else {
-              setVariantBox(response)
-              handleRecentSave();
-              setWebhookSubmitSuccessAlert(true)
-              setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
-            }
-          })
-          .catch((err) => console.log(err));
+        handleScrape(url, domain, handle, productLink)
       } else {
         setShowUrlAlert(true);
         setTimeout(() => setShowUrlAlert(false), 2000);
       }
     }
   };
+
+  const handleScrape = (url, domain, handle, productLink) => {
+    axios(url)
+      .then((data) => scraper(
+        data.data, !isLoggedIn ? webhookValue : webhookField,
+        domain, handle, productLink,
+        delimiterValue,
+      ))
+      .then((scraperResponse) => {
+        if (!scraperResponse) {
+          axios(productLink)
+            .then((productLinkData) => domScraper(
+              productLinkData.data, !isLoggedIn ? webhookValue : webhookField,
+              domain, productLink,
+              delimiterValue,
+            ))
+            .then((scraperResponse) => {
+              if (!scraperResponse) {
+                setShowVariantAlert(true);
+                setTimeout(() => setShowVariantAlert(false), 2000);
+                resetDelimiterValue();
+              } else {
+                setProductImage(scraperResponse.productImage);
+                setProductTitle(scraperResponse.productTitle);
+                setProductPrice(scraperResponse.productPrice);
+                setVariantBox(scraperResponse.variants)
+                handleRecentSave();
+                setWebhookSubmitSuccessAlert(true)
+                setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
+                setIsLoading(false);
+              }
+            })
+        } else {
+          setProductInfo({ ...productInfo, scraperResponse })
+          setVariantBox(scraperResponse.variants)
+          handleRecentSave();
+          setWebhookSubmitSuccessAlert(true)
+          setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => console.log(err));
+  }
 
   const handleWebhookSave = () => {
     const webhookURL = webhookField;
@@ -219,7 +262,7 @@ const Home = ({ isLoggedIn }) => {
   }
 
   const handleSiteValue = (e) => {
-    setSiteValue(e.target.value);
+    setSiteValue(e.target.value.replace(/\?.+/, ''));
   }
   const handleRecentChange = (e) => {
     setSiteValue(e.target.id)
@@ -325,41 +368,53 @@ const Home = ({ isLoggedIn }) => {
               <option value=";">;</option>
               <option value="-">-</option>
             </Form.Control>
-            <Form.Label className="variant-title">Variants</Form.Label>
-            <Form.Control as="textarea" className="variant-box" rows="12" disabled defaultValue={variantBox}>
-            </Form.Control>
-            <FontAwesomeIcon
-              icon={faClipboard}
-              style={{ color: '#f5cb5c', cursor: 'pointer' }}
-              onClick={() => handleCopy(variantBox)}
-            />
+            {!isLoggedIn ? (
+              <Form.Group controlId="eControlTextarea1">
+                <Form.Label>Insert Webhook</Form.Label>
+                <Form.Control as="textarea" row={1} {...bindWebhookValue} placeholder="Register an account to save!" />
+              </Form.Group>
+            )
+              :
+              <WebhookTableContainer>
+                <WebhookTable
+                  isEdit={isEdit}
+                  handleWebhookEdit={handleWebhookEdit}
+                  handleWebhookSave={handleWebhookSave}
+                  handleWebhookDelete={handleWebhookDelete}
+                  setWebhookField={setWebhookField}
+                  webhookField={webhookField}
+                />
+              </WebhookTableContainer>
+            }
+            <Button variant="warning" type="submit">
+              {!isLoading ? (
+                'Submit'
+              ) : <FontAwesomeIcon
+                  className="fa-spin"
+                  icon={faCircleNotch}
+              />}
+            </Button>
           </Form.Group>
-          {!isLoggedIn ? (
-            <Form.Group controlId="eControlTextarea1">
-              <Form.Label>Insert Webhook</Form.Label>
-              <Form.Control as="textarea" row={1} {...bindWebhookValue} placeholder="Register an account to save!" />
-            </Form.Group>
-          )
-            : ''}
-          <Button variant="warning" type="submit">
-            Submit
-          </Button>
         </StyledForm>
       </FormContainer>
-      <WebhookTableContainer>
-        {isLoggedIn
-          ? (
-            <WebhookTable
-              isEdit={isEdit}
-              handleWebhookEdit={handleWebhookEdit}
-              handleWebhookSave={handleWebhookSave}
-              handleWebhookDelete={handleWebhookDelete}
-              setWebhookField={setWebhookField}
-              webhookField={webhookField}
-            />
-          )
-          : ''}
-      </WebhookTableContainer>
+      <VariantProductInfoWrapper>
+        <VariantContainer>
+          <label className="variant-title">Variants</label>
+          <textarea className="variant-box" rows="12" disabled defaultValue={variantBox} />
+          <FontAwesomeIcon
+            icon={faClipboard}
+            style={{ color: '#f5cb5c', cursor: 'pointer', display: 'block' }}
+            onClick={() => handleCopy(variantBox)}
+          />
+        </VariantContainer>
+        <ProductTableContainer>
+          <label className="product-title">{productTitle}</label>
+          <ProductInfo
+            productImage={productImage}
+            productPrice={productPrice}
+          />
+        </ProductTableContainer>
+      </VariantProductInfoWrapper>
     </>
   );
 };

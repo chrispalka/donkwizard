@@ -8,6 +8,7 @@ import NavBar from '../components/NavBar';
 import WebhookTable from '../components/WebhookTable';
 import Footer from '../components/Footer';
 import Recents from '../components/Recents';
+import ProductInfo from '../components/ProductInfo';
 
 
 export {
@@ -20,4 +21,5 @@ export {
   WebhookTable,
   Footer,
   Recents,
+  ProductInfo,
 };
