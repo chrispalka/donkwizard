@@ -164,7 +164,7 @@ const Home = ({ isLoggedIn }) => {
         })
         .catch((err) => console.log(err));
     }
-  }, []);
+  }, [recentsArray]);
 
 
   const handleSubmit = (e) => {

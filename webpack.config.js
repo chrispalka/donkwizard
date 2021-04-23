@@ -1,6 +1,9 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const NewrelicWebpackPlugin = require('@newrelic/webpack-plugin/lib/NewrelicWebpackPlugin')
+const nodeExternals = require('@newrelic/webpack-plugin/lib/externals')
+
 const path = require('path');
 
 const SRC_DIR = path.join(__dirname, 'client/src');
@@ -14,6 +17,7 @@ module.exports = {
     path: DIST_DIR,
     publicPath: '/',
   },
+  externals: [nodeExternals()],
   plugins: [
     new HtmlWebpackPlugin({
       template: './client/index.html',
@@ -21,6 +25,7 @@ module.exports = {
     }),
     new NodePolyfillPlugin(),
     new FaviconsWebpackPlugin('./client/src/assets/favicon.ico'),
+    new NewrelicWebpackPlugin(),
   ],
   module: {
     rules: [
