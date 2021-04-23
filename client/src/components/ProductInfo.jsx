@@ -14,7 +14,7 @@ const ProductInfo = ({
       </tr>
       <tr>
         <td>
-          Price: ${productPrice}
+          {productPrice}
         </td>
       </tr>
     </tbody>

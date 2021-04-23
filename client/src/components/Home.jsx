@@ -218,7 +218,7 @@ const Home = ({ isLoggedIn }) => {
               } else {
                 setProductImage(scraperResponse.productImage);
                 setProductTitle(scraperResponse.productTitle);
-                setProductPrice(scraperResponse.productPrice);
+                setProductPrice(`Price: \$${scraperResponse.productPrice}`);
                 setVariantBox(scraperResponse.variants)
                 handleRecentSave();
                 setWebhookSubmitSuccessAlert(true)
