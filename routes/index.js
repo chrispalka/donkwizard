@@ -111,21 +111,23 @@ router.post('/saveWebhook', async (req, res) => {
 });
 
 router.get('/getWebhook', async (req, res) => {
-  const { email } = req.user[0];
-  try {
-    const user = await getUserName(email);
-    if (user) {
-      const webhook = await getWebhook(user.dataValues.id);
-      if (webhook) {
-        res.json(webhook.dataValues.webhook);
+  if (req.user) {
+    const { email } = req.user[0];
+    try {
+      const user = await getUserName(email);
+      if (user) {
+        const webhook = await getWebhook(user.dataValues.id);
+        if (webhook) {
+          res.json(webhook.dataValues.webhook);
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
-    } else {
-      return false;
+    } catch (e) {
+      console.log(e);
     }
-  } catch (e) {
-    console.log(e);
   }
 });
 
@@ -147,25 +149,27 @@ router.post('/saveRecent', async (req, res) => {
 });
 
 router.get('/getRecent', async (req, res) => {
-  const recentsArray = [];
-  const { email } = req.user[0];
-  try {
-    const user = await getUserName(email);
-    if (user) {
-      const recents = await getRecent(user.dataValues.id);
-      recents.forEach((recent) => {
-        recentsArray.push(recent.dataValues.recents)
-      })
-      if (recentsArray.length !== 0) {
-        res.json(recentsArray);
+  if (req.user) {
+    const recentsArray = [];
+    const { email } = req.user[0];
+    try {
+      const user = await getUserName(email);
+      if (user) {
+        const recents = await getRecent(user.dataValues.id);
+        recents.forEach((recent) => {
+          recentsArray.push(recent.dataValues.recents)
+        })
+        if (recentsArray.length !== 0) {
+          res.json(recentsArray);
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
-    } else {
-      return false;
+    } catch (e) {
+      console.log(e);
     }
-  } catch (e) {
-    console.log(e);
   }
 });
 
