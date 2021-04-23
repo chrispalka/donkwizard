@@ -1,3 +1,5 @@
 node_modules
 .env
 certs
+newrelic.js
+newrelic_agent.log
