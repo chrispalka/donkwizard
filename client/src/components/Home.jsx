@@ -153,18 +153,10 @@ const Home = ({ isLoggedIn }) => {
         .then((webhookData) => {
           setWebhookField(webhookData.data);
         })
-        .then(() => {
-          axios('/getRecent')
-            .then((recentData) => {
-              if (recentData.data.length !== 0) {
-                setRecentsArray([...recentData.data])
-              }
-            })
-            .catch((err) => console.log(err));
-        })
+        .then(() => handleGetRecent())
         .catch((err) => console.log(err));
     }
-  }, [recentsArray]);
+  }, []);
 
 
   const handleSubmit = (e) => {
@@ -176,10 +168,10 @@ const Home = ({ isLoggedIn }) => {
       (webhookValue.length !== 120 && webhookField.length !== 120)
       &&
       (webhookValue.length !== 0 && webhookField.length !== 0)
-      ) {
-        setShowWebhookAlert(true);
-        setTimeout(() => setShowWebhookAlert(false), 2000);
-      } else {
+    ) {
+      setShowWebhookAlert(true);
+      setTimeout(() => setShowWebhookAlert(false), 2000);
+    } else {
       setIsLoading(true);
       const productLink = siteValue
       const valueArray = siteValue.split('/');
@@ -194,6 +186,16 @@ const Home = ({ isLoggedIn }) => {
       }
     }
   };
+
+  const handleGetRecent = () => {
+    axios('/getRecent')
+      .then((recentData) => {
+        if (recentData.data.length !== 0) {
+          setRecentsArray([...recentData.data])
+        }
+      })
+      .catch((err) => console.log(err));
+  }
 
   const handleScrape = (url, domain, handle, productLink) => {
     axios(url)
@@ -220,7 +222,9 @@ const Home = ({ isLoggedIn }) => {
                 setProductTitle(scraperResponse.productTitle);
                 setProductPrice(`Price: \$${scraperResponse.productPrice}`);
                 setVariantBox(scraperResponse.variants)
-                handleRecentSave();
+                if (isLoggedIn) {
+                  handleRecentSave();
+                }
                 setWebhookSubmitSuccessAlert(true)
                 setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
                 setIsLoading(false);
@@ -229,7 +233,9 @@ const Home = ({ isLoggedIn }) => {
         } else {
           setProductInfo({ ...productInfo, scraperResponse })
           setVariantBox(scraperResponse.variants)
-          handleRecentSave();
+          if (isLoggedIn) {
+            handleRecentSave();
+          }
           setWebhookSubmitSuccessAlert(true)
           setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
           setIsLoading(false);
@@ -259,6 +265,7 @@ const Home = ({ isLoggedIn }) => {
       siteValue,
     })
       .catch((err) => console.log(err));
+    handleGetRecent()
   }
 
   const handleSiteValue = (e) => {
@@ -390,8 +397,8 @@ const Home = ({ isLoggedIn }) => {
               {!isLoading ? (
                 'Submit'
               ) : <FontAwesomeIcon
-                  className="fa-spin"
-                  icon={faCircleNotch}
+                className="fa-spin"
+                icon={faCircleNotch}
               />}
             </Button>
           </Form.Group>
