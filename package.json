@@ -24,6 +24,7 @@
     "bcrypt": "^5.0.1",
     "bootstrap": "^4.6.0",
     "cheerio": "^1.0.0-rc.6",
+    "connect-session-sequelize": "^7.1.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "dotenv-webpack": "^7.0.2",

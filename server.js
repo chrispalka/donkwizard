@@ -5,11 +5,18 @@ const session = require('express-session');
 const passport = require('passport');
 const cors = require('cors');
 const routes = require('./routes/index');
+const { db } = require('./models/index');
 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const { SECRET } = process.env
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+
+
+const myStore = new SequelizeStore({
+  db: db.sequelize,
+});
 
 
 app.use(cors());
@@ -19,9 +26,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(session({
   secret: SECRET,
-  resave: true,
+  store: myStore,
+  resave: false,
   saveUninitialized: true
 }));
+
+myStore.sync();
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', routes);
