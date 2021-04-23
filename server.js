@@ -28,7 +28,8 @@ app.use(session({
   secret: SECRET,
   store: myStore,
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  proxy: true,
 }));
 
 myStore.sync();
