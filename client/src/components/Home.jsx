@@ -231,7 +231,9 @@ const Home = ({ isLoggedIn }) => {
               }
             })
         } else {
-          setProductInfo({ ...productInfo, scraperResponse })
+          setProductImage(scraperResponse.productImage);
+          setProductTitle(scraperResponse.productTitle);
+          setProductPrice(`Price: \$${scraperResponse.productPrice}`);
           setVariantBox(scraperResponse.variants)
           if (isLoggedIn) {
             handleRecentSave();
