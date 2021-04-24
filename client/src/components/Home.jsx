@@ -28,6 +28,7 @@ const FormContainer = styled(Container)`
 const StyledForm = styled(Form)`
   .select-form {
     width: 5%;
+    margin-bottom: 1.5em;
   }
   .form-label {
     color: #cfdbd5;
@@ -112,6 +113,7 @@ const RecentsTableContainer = styled(Container)`
 
 const ProductTableContainer = styled(Container)`
 padding-right: 0;
+padding-left: 3em;
   .table {
     color: #cfdbd5;
   }
@@ -119,10 +121,11 @@ padding-right: 0;
     border: none;
   }
   .product-title {
+    padding-left: 12px;
     color: #cfdbd5;
     font-family: 'Roboto';
     display: block;
-    margin-top: 1em;
+    margin-top: 2.6em;
   }
 `;
 
@@ -370,7 +373,7 @@ const Home = ({ isLoggedIn }) => {
 
             )
             : ''}
-          <Form.Group controlId="ControlSelect2">
+          <Form.Group controlId="ControlSelect2" className="delimeter-box">
             <Form.Label>Select delimiter format</Form.Label>
             <Form.Control {...bindDelimiterValue} as="select" className="select-form">
               <option value=":">:</option>
