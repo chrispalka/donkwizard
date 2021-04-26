@@ -28,10 +28,6 @@ const FormContainer = styled(Container)`
 `;
 
 const StyledForm = styled(Form)`
-  .select-form {
-    width: 5%;
-    margin-bottom: 1.5em;
-  }
   .form-label {
     color: #cfdbd5;
     font-family: 'Roboto';
@@ -103,6 +99,7 @@ const WebhookTableContainer = styled(Container)`
 
 const RecentsTableContainer = styled(Container)`
   margin-top: 1em;
+  margin-bottom: 3em;
   padding: 0;
   font-family: 'Roboto';
   .svg-inline--fa {
