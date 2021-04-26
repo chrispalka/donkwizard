@@ -3,7 +3,7 @@ import webhook from './webhook';
 const cheerio = require('cheerio');
 
 const domScraper = (data, webhookURL, domain, productLink, delimiter) => {
-  delimiter = delimiter !== '' ? delimiter : ':';
+  delimiter = delimiter !== '' ? delimiter : '-';
   const result = [];
   const delimitedResult = [];
   let productTitle, productImage, productPrice;

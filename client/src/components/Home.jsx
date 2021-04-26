@@ -16,6 +16,8 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faClipboard,
+  faCaretSquareDown,
+  faCaretSquareUp,
   faCircleNotch,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -85,7 +87,11 @@ const WebhookTableContainer = styled(Container)`
     margin-right: 0.5em;
   }
   .table {
-    color: #cfdbd5;
+    background-color: #cfdbd5;
+    color: black;
+    td:hover {
+      background-color: #f5cb5c;
+    }
   }
   .table > tbody > tr > td {
     word-wrap: break-word;
@@ -103,11 +109,28 @@ const RecentsTableContainer = styled(Container)`
     margin-right: 0.5em;
   }
   .table {
-    color: #cfdbd5;
+    background-color: #cfdbd5;
+    color: black;
     td:hover {
       background-color: #f5cb5c;
-      color: black;
     }
+  }
+  .table th, .table td {
+    border-top: none;
+  }
+  span {
+    padding-left: 0.4em;
+    color: #cfdbd5;
+    display: table;
+    margin: auto;
+    margin-bottom: 1em;
+  }
+  h1 {
+    font-family: 'Roboto';
+    color: #cfdbd5;
+    font-size: 18px;
+    display: table;
+    margin: auto;
   }
 `;
 
@@ -131,7 +154,6 @@ padding-left: 3em;
 
 const Home = ({ isLoggedIn }) => {
   const [siteValue, setSiteValue] = useState('');
-  const { value: delimiterValue, bind: bindDelimiterValue, reset: resetDelimiterValue } = useInput('');
   const { value: webhookValue, bind: bindWebhookValue } = useInput('');
   const [isEdit, setIsEdit] = useState(false);
   const [webhookField, setWebhookField] = useState('');
@@ -148,6 +170,8 @@ const Home = ({ isLoggedIn }) => {
   const [productTitle, setProductTitle] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showRecents, setShowRecents] = useState(false);
+  const delimiterValue = '-';
 
 
   useEffect(() => {
@@ -219,7 +243,6 @@ const Home = ({ isLoggedIn }) => {
               if (!scraperResponse) {
                 setShowVariantAlert(true);
                 setTimeout(() => setShowVariantAlert(false), 2000);
-                resetDelimiterValue();
               } else {
                 setProductImage(scraperResponse.productImage);
                 setProductTitle(scraperResponse.productTitle);
@@ -264,6 +287,10 @@ const Home = ({ isLoggedIn }) => {
       setIsEdit(!isEdit);
     }
   };
+
+  const handleShowRecents = () => {
+    setShowRecents(!showRecents);
+  }
 
   const handleRecentSave = () => {
     axios.post('/saveRecent', {
@@ -365,21 +392,32 @@ const Home = ({ isLoggedIn }) => {
           {isLoggedIn && recentsArray.length !== 0
             ? (
               <RecentsTableContainer>
+                <h1>Recents</h1>
+                <span>
+                  {showRecents ? (
+                    <FontAwesomeIcon
+                      icon={faCaretSquareUp}
+                      style={{ color: '#f5cb5c', cursor: 'pointer' }}
+                      onClick={handleShowRecents}
+                    />
+                  ) :
+                    <FontAwesomeIcon
+                      icon={faCaretSquareDown}
+                      style={{ color: '#f5cb5c', cursor: 'pointer' }}
+                      onClick={handleShowRecents}
+                    />
+
+                  }
+                </span>
                 <Recents
+                  showRecents={showRecents}
                   recents={recentsArray}
                   handleChange={handleRecentChange}
                 />
               </RecentsTableContainer>
-
             )
             : ''}
           <Form.Group controlId="ControlSelect2" className="delimeter-box">
-            <Form.Label>Select delimiter format</Form.Label>
-            <Form.Control {...bindDelimiterValue} as="select" className="select-form">
-              <option value=":">:</option>
-              <option value=";">;</option>
-              <option value="-">-</option>
-            </Form.Control>
             {!isLoggedIn ? (
               <Form.Group controlId="eControlTextarea1">
                 <Form.Label>Insert Webhook</Form.Label>

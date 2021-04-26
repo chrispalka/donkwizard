@@ -1,18 +1,87 @@
 /* dela-gothic-one-regular - latin */
+
 @font-face {
   font-family: 'Dela Gothic One';
   font-style: normal;
   font-weight: 400;
-  src: url('./fonts/dela-gothic-one-v1-latin-regular.eot'); /* IE9 Compat Modes */
-  src: local(''),
-       url('./fonts/dela-gothic-one-v1-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('./fonts/dela-gothic-one-v1-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-       url('./fonts/dela-gothic-one-v1-latin-regular.woff') format('woff'), /* Modern Browsers */
-       url('./fonts/dela-gothic-one-v1-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('./fonts/dela-gothic-one-v1-latin-regular.svg#DelaGothicOne') format('svg'); /* Legacy iOS */
+  src: url('./fonts/dela-gothic-one-v1-latin-regular.eot');
+  /* IE9 Compat Modes */
+  src: local(''), url('./fonts/dela-gothic-one-v1-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('./fonts/dela-gothic-one-v1-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+  url('./fonts/dela-gothic-one-v1-latin-regular.woff') format('woff'), /* Modern Browsers */
+  url('./fonts/dela-gothic-one-v1-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+  url('./fonts/dela-gothic-one-v1-latin-regular.svg#DelaGothicOne') format('svg');
+  /* Legacy iOS */
 }
 
 .navbar-custom {
   background-color: #534b62;
 }
 
+.page {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+}
+
+.page-enter {
+  opacity: 0;
+  transform: scale(1.4);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.slide-enter {
+  transform: translateX(-10%);
+}
+
+.slide-enter-active {
+  transform: translateX(0%);
+  transition: transform 200ms ease-in-out;
+}
+
+.slide-exit {
+  transform: translateX(0%);
+}
+
+.slide-exit-active {
+  transform: translateX(-100%);
+  transition: transform 1000ms ease-in-out;
+}
+
+.shrink-enter {
+  transform: scaleY(0);
+  transform-origin: 50% 0%;
+}
+
+.shrink-enter-active {
+  transform: scale(1.0);
+  transition: transform 500ms ease-in;
+  transform-origin: 50% 0%;
+}
+
+.shrink-exit {
+  transform: scaleY(1.0);
+  transform-origin: 50% 0%;
+}
+
+.shrink-exit-active {
+  transform: scaleY(0);
+  transform-origin: 50% 0%;
+  transition: transform 500ms ease-in;
+}

@@ -2,7 +2,7 @@
 import webhook from './webhook';
 
 const scraper = (data, webhookURL, domain, handle, productLink, delimiter) => {
-  delimiter = delimiter !== '' ? delimiter : ':';
+  delimiter = delimiter !== '' ? delimiter : '-';
   let productTitle, productImage, productPrice;
   const delimitedResult = [];
   const result = [];

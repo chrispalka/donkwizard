@@ -25,6 +25,7 @@ const Global = createGlobalStyle`
     margin: 0;
     padding-bottom: 50px;
     background-color: #242423;
+    overflow-y: scroll;
   }
   `;
 
