@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const CopyPlugin = require("copy-webpack-plugin");
 
 const path = require('path');
 
@@ -43,13 +44,14 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|svg|eot|ttf|woff|woff2|ico|)$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-        },
+        use: [
+          {
+            loader: 'url-loader',
+          }
+        ]
       },
       {
-        test: /\.(mp3|gif)$/,
+        test: /\.(mp3|gif|png)$/,
         use: [
           {
             loader: 'file-loader',

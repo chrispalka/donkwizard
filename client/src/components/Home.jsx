@@ -244,29 +244,38 @@ const Home = ({ isLoggedIn }) => {
                 setProductImage(scraperResponse.productImage);
                 setProductTitle(scraperResponse.productTitle);
                 setProductPrice(`Price: \$${scraperResponse.productPrice}`);
-                setVariantBox(scraperResponse.variants)
+                setVariantBox(scraperResponse.variants);
                 if (isLoggedIn) {
                   handleRecentSave();
                 }
-                setWebhookSubmitSuccessAlert(true)
+                setSiteValue('');
+                setWebhookSubmitSuccessAlert(true);
                 setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
                 setIsLoading(false);
               }
             })
+            .catch((err) => {
+              if (err.response.status === 404) {
+                setShowVariantAlert(true);
+                setTimeout(() => setShowVariantAlert(false), 2000);
+                setIsLoading(false);
+              }
+            });
         } else {
           setProductImage(scraperResponse.productImage);
           setProductTitle(scraperResponse.productTitle);
           setProductPrice(`Price: \$${scraperResponse.productPrice}`);
-          setVariantBox(scraperResponse.variants)
+          setVariantBox(scraperResponse.variants);
           if (isLoggedIn) {
             handleRecentSave();
           }
-          setWebhookSubmitSuccessAlert(true)
+          setSiteValue('');
+          setWebhookSubmitSuccessAlert(true);
           setTimeout(() => setWebhookSubmitSuccessAlert(false), 2000);
           setIsLoading(false);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err.response));
   }
 
   const handleWebhookSave = () => {
