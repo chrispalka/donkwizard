@@ -3,3 +3,5 @@ node_modules
 certs
 newrelic.js
 newrelic_agent.log
+dev.bundle.js
+prod.bundle.js.LICENSE.txt
