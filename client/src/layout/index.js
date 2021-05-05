@@ -9,6 +9,8 @@ import WebhookTable from '../components/WebhookTable';
 import Footer from '../components/Footer';
 import Recents from '../components/Recents';
 import ProductInfo from '../components/ProductInfo';
+import Monitor from '../components/Monitor';
+import Monitored from '../components/Monitored';
 
 
 export {
@@ -22,4 +24,6 @@ export {
   Footer,
   Recents,
   ProductInfo,
+  Monitor,
+  Monitored,
 };

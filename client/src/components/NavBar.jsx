@@ -42,6 +42,7 @@ const NavContainer = styled(Container)`
     background-color: #333533;
   }
   #nav-dropdown {
+    padding-left: 0;
     color: #f5cb5c;
     :hover {
       color: #FFF;
@@ -75,6 +76,9 @@ const NavBar = ({ isLoggedIn, location }) => {
               <Link to="/" className="nav-link-custom">Home</Link>
             )
             : ''}
+            {isLoggedIn && currentUser === 'cpalka87@gmail.com' ? (
+              <Link to='/monitor'>Monitor</Link>
+            ) : ''}
             {!isLoggedIn ? (
               <Link to="/login" className="nav-link-custom">Login</Link>
             )

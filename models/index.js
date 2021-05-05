@@ -63,20 +63,20 @@ module.exports = {
   updateForgotPassword: (id, resetpasswordtoken, resetpasswordexpires) => db.User.update({
     resetpasswordtoken, resetpasswordexpires,
   },
-  {
-    where: {
-      id,
-    },
-  }).then((response) => response)
+    {
+      where: {
+        id,
+      },
+    }).then((response) => response)
     .catch((err) => console.log(err)),
   updateUserPassword: (email, password) => db.User.update({
     password,
   },
-  {
-    where: {
-      email,
-    },
-  }).then((response) => response)
+    {
+      where: {
+        email,
+      },
+    }).then((response) => response)
     .catch((err) => console.log(err)),
   getWebhook: (user_id) => db.Webhook.findOne({
     where: { user_id },
@@ -93,11 +93,41 @@ module.exports = {
       },
     }).then((response) => response)
     .catch((err) => console.log(err)),
-  deleteWebhook: (user_id) => db.Webhook.destroy(
+  deleteWebhook: (user_id) => db.Webhook.destroy({
+    where: {
+      user_id,
+    },
+  }).then((response) => response)
+    .catch((err) => console.log(err)),
+  addMonitor: (id, product, user_id) => db.Monitor.create({
+    id, product, user_id,
+  }).then((response) => response)
+  .catch((err) => console.log(err)),
+  getMonitors: (user_id) => db.Monitor.findAll({
+    where: {
+      user_id,
+    }
+  }).then((response) => response)
+    .catch((err) => console.log(err)),
+  getAllMonitors: () => db.Monitor.findAll({
+    where: {
+      run: true,
+    }
+  }).then((response) => response)
+  .catch((err) => console.log(err)),
+  deleteMonitor: (product, user_id) => db.Monitor.destroy({
+    where: {
+      user_id,
+      product,
+    }
+  }).then((response) => response)
+    .catch((err) => console.log.length(err)),
+  changeMonitorState: (product, user_id, run) => db.Monitor.update({ run },
     {
       where: {
+        product,
         user_id,
-      },
-    }).then((response) => response)
-    .catch((err) => console.log(err)),
+      }
+  }).then((response) => response)
+  .catch((err) => console.log(err)),
 };

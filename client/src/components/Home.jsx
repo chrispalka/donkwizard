@@ -172,14 +172,18 @@ const Home = ({ isLoggedIn }) => {
 
 
   useEffect(() => {
+    let isMounted = true;
     if (isLoggedIn) {
       axios('/getWebhook')
         .then((webhookData) => {
-          setWebhookField(webhookData.data);
+          if (isMounted) {
+            setWebhookField(webhookData.data);
+          }
         })
         .then(() => handleGetRecent())
         .catch((err) => console.log(err));
     }
+    return () => { isMounted = false };
   }, []);
 
 
@@ -196,13 +200,13 @@ const Home = ({ isLoggedIn }) => {
       setShowWebhookAlert(true);
       setTimeout(() => setShowWebhookAlert(false), 2000);
     } else {
-      setIsLoading(true);
       const productLink = siteValue
       const valueArray = siteValue.split('/');
       const domain = valueArray[2];
       const handle = valueArray[valueArray.length - 1]
       const url = `https://${domain}/products.json`;
       if (domain !== undefined) {
+        setIsLoading(true);
         handleScrape(url, domain, handle, productLink)
       } else {
         setShowUrlAlert(true);
@@ -233,11 +237,12 @@ const Home = ({ isLoggedIn }) => {
           axios(productLink)
             .then((productLinkData) => domScraper(
               productLinkData.data, !isLoggedIn ? webhookValue : webhookField,
-              domain, productLink,
-              delimiterValue,
+              domain, productLink, handle,
+              delimiterValue
             ))
             .then((scraperResponse) => {
               if (!scraperResponse) {
+                setIsLoading(false);
                 setShowVariantAlert(true);
                 setTimeout(() => setShowVariantAlert(false), 2000);
               } else {
@@ -303,11 +308,11 @@ const Home = ({ isLoggedIn }) => {
       siteValue,
     })
       .catch((err) => console.log(err));
-    handleGetRecent()
+    handleGetRecent();
   }
 
   const handleSiteValue = (e) => {
-    setSiteValue(e.target.value.replace(/\?.+/, ''));
+    setSiteValue(e.target.value.replace(/\?.+/, '').trim());
   }
   const handleRecentChange = (e) => {
     setSiteValue(e.target.id)
@@ -417,7 +422,7 @@ const Home = ({ isLoggedIn }) => {
                 </span>
                 <Recents
                   showRecents={showRecents}
-                  recents={recentsArray}
+                  recents={recentsArray.flat()}
                   handleChange={handleRecentChange}
                 />
               </RecentsTableContainer>

@@ -19,6 +19,11 @@ const {
   deleteWebhook,
   addRecent,
   getRecent,
+  getMonitors,
+  deleteMonitor,
+  changeMonitorState,
+  addMonitor,
+  getAllMonitors,
 } = require('../models/index');
 
 const { isAuthenticated } = require('../modules/auth');
@@ -91,22 +96,34 @@ router.get('/isLoggedIn', async (req, res) => {
 });
 
 router.post('/saveWebhook', async (req, res) => {
-  const { email } = req.user[0];
-  const { webhookURL } = req.body;
-  try {
-    const user = await getUserName(email);
-    if (user) {
-      const webhook = await getWebhook(user.dataValues.id);
-      if (webhook) {
-        await updateWebhook(webhookURL, user.dataValues.id);
+  if (req.user) {
+    const { email } = req.user[0];
+    const { webhookURL } = req.body;
+    try {
+      const user = await getUserName(email);
+      if (user) {
+        const webhook = await getWebhook(user.dataValues.id);
+        if (webhook) {
+          await updateWebhook(webhookURL, user.dataValues.id);
+        } else {
+          await addWebHook(uuidv4(), webhookURL, user.dataValues.id);
+        }
       } else {
-        await addWebHook(uuidv4(), webhookURL, user.dataValues.id);
+        return false;
       }
-    } else {
-      return false;
+    } catch (e) {
+      console.log(e);
     }
-  } catch (e) {
-    console.log(e);
+  }
+});
+
+router.post('/getMonitorWebhook', async (req, res) => {
+  const { user_id } = req.body;
+  const webhook = await getWebhook(user_id);
+  if (webhook) {
+    res.json(webhook.dataValues.webhook);
+  } else {
+    return false;
   }
 });
 
@@ -166,6 +183,95 @@ router.get('/getRecent', async (req, res) => {
         }
       } else {
         return false;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+});
+
+router.post('/addMonitor', async (req, res) => {
+  if (req.user) {
+    const { email } = req.user[0];
+    const { productValue } = req.body;
+    try {
+      const user = await getUserName(email);
+      if (user) {
+        await addMonitor(uuidv4(), productValue, user.dataValues.id);
+      } else {
+        return false;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+});
+
+router.get('/getMonitors', async (req, res) => {
+  if (req.user) {
+    const monitorArray = [];
+    const { email } = req.user[0];
+    try {
+      const user = await getUserName(email);
+      if (user) {
+        const monitors = await getMonitors(user.dataValues.id);
+        monitors.forEach((monitor) => {
+          monitorArray.push(monitor.dataValues.product);
+        })
+        if (monitorArray.length !== 0) {
+          res.json(monitorArray);
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+});
+
+router.get('/getAllMonitors', async (req, res) => {
+  const monitorArray = [];
+  try {
+    const monitors = await getAllMonitors();
+    monitors.forEach((monitor) => {
+      monitorArray.push(monitor.dataValues);
+    })
+    if (monitorArray.length !== 0) {
+      res.json(monitorArray);
+    } else {
+      return false;
+    }
+  } catch (e) {
+    console.log(e)
+  }
+});
+
+router.put('/deleteMonitor', async (req, res) => {
+  if (req.user) {
+    const { email } = req.user[0];
+    try {
+      const user = await getUserName(email);
+      if (user) {
+        await deleteMonitor(product, user.dataValues.id);
+        res.json('Success')
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+});
+
+router.put('/changeMonitor', async (req, res) => {
+  if (req.user) {
+    const { email } = req.user[0];
+    const { product, run } = req.body;
+    try {
+      const user = await getUserName(email);
+      if (user) {
+        await changeMonitorState(product, user.dataValues.id, run)
       }
     } catch (e) {
       console.log(e);
@@ -239,17 +345,19 @@ router.post('/updatePasswordFromEmail', async (req, res) => {
 });
 
 router.put('/deleteWebhook', async (req, res) => {
-  const { email } = req.user[0];
-  try {
-    const user = await getUserName(email);
-    if (user) {
-      await deleteWebhook(user.dataValues.id);
-      res.json('Success')
+  if (req.user) {
+    const { email } = req.user[0];
+    try {
+      const user = await getUserName(email);
+      if (user) {
+        await deleteWebhook(user.dataValues.id);
+        res.json('Success')
+      }
+    } catch (e) {
+      console.log(e)
     }
-  } catch (e) {
-    console.log(e)
   }
-})
+});
 
 passport.serializeUser((user, done) => {
   done(null, user);

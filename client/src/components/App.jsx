@@ -13,9 +13,10 @@ import {
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons"
 import styled, { createGlobalStyle } from 'styled-components';
 import { Container } from 'react-bootstrap';
+import '../../../modules/monitorJob';
 import {
   ForgotPassword,
-  Home, Login, Register, ResetPassword, NavBar, Footer,
+  Home, Login, Register, ResetPassword, NavBar, Footer, Monitor
 } from '../layout/index';
 
 const axios = require('axios');
@@ -76,14 +77,17 @@ const App = () => {
             {isLoggedIn ? <Redirect to="/" /> : <Login />}
           </Route>
           <Route path="/register" exact component={() => <Register />} />
-          <Route path="/" exact component={() => <Home isLoggedIn={isLoggedIn} />} />
-          <Route path="/forgotpassword" exact component={() => <ForgotPassword />} />
-          <Route path="/resetpassword/:token" exact component={() => <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}>
-            {passwordUpdated ? <Redirect to="/login" /> : <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}
+          <Route path="/monitor" exact component={() => <Monitor />}>
+            {!isLoggedIn ? <Redirect to="/" /> : <Monitor />}
           </Route>
+        <Route path="/" exact component={() => <Home isLoggedIn={isLoggedIn} />} />
+        <Route path="/forgotpassword" exact component={() => <ForgotPassword />} />
+        <Route path="/resetpassword/:token" exact component={() => <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}>
+          {passwordUpdated ? <Redirect to="/login" /> : <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}
+        </Route>
         </Switch>
-        <Footer links={FooterLinks} />
-      </MainContainer>
+      <Footer links={FooterLinks} />
+    </MainContainer>
     </>
   );
 };
