@@ -76,7 +76,7 @@ const NavBar = ({ isLoggedIn, location }) => {
               <Link to="/" className="nav-link-custom">Home</Link>
             )
             : ''}
-            {isLoggedIn && currentUser === 'cpalka87@gmail.com' ? (
+            {isLoggedIn && currentUser === 'cpalka87@gmail.com' || isLoggedIn && currentUser === 'chloeonyx28@gmail.com' ? (
               <Link to='/monitor'>Monitor</Link>
             ) : ''}
             {!isLoggedIn ? (
