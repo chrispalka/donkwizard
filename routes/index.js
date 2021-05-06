@@ -216,7 +216,11 @@ router.get('/getMonitors', async (req, res) => {
       if (user) {
         const monitors = await getMonitors(user.dataValues.id);
         monitors.forEach((monitor) => {
-          monitorArray.push(monitor.dataValues.product);
+          monitorArray.push({
+            product: monitor.dataValues.product,
+            run: monitor.dataValues.run,
+            id: monitor.dataValues.id,
+          });
         })
         if (monitorArray.length !== 0) {
           res.json(monitorArray);
@@ -273,6 +277,7 @@ router.put('/changeMonitor', async (req, res) => {
       if (user) {
         await changeMonitorState(product, user.dataValues.id, run)
       }
+      res.sendStatus(200)
     } catch (e) {
       console.log(e);
     }

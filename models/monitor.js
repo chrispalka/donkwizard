@@ -16,7 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   Monitor.init({
     product: DataTypes.STRING(500),
     user_id: DataTypes.UUID,
-    run: DataTypes.BOOLEAN,
+    run: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    }
   }, {
     sequelize,
     modelName: 'Monitor',

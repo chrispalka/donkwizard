@@ -40,8 +40,8 @@ const MonitorTableContainer = styled(Container)`
     margin-right: 0.5em;
   }
   .table {
-    background-color: #cfdbd5;
     color: black;
+    background-color: #cfdbd5;
   }
   .table th, .table td {
     border-top: none;
@@ -121,11 +121,15 @@ https://kith.com/collections/mens-footwear/products/y3s42846
   */
 
   const handleGetMonitors = () => {
+    let array = [];
     axios('/getMonitors')
       .then((monitorData) => {
-        if (monitorData.data.length !== 0) {
-          setMonitorArray([...monitorArray, monitorData.data]);
-        }
+        monitorData.data.forEach((item) => {
+          array.push(item)
+          if (monitorData.data.length !== 0) {
+            setMonitorArray([array]);
+          }
+        })
       })
       .catch((err) => console.log(err));
   };
@@ -149,7 +153,10 @@ https://kith.com/collections/mens-footwear/products/y3s42846
     axios.put('/changeMonitor', {
       product,
       run,
+    }).then(() => {
+      handleGetMonitors();
     })
+      .catch((err) => console.log(err))
   };
   const handleStopMonitor = (e) => {
     const product = e.target.id
@@ -157,12 +164,12 @@ https://kith.com/collections/mens-footwear/products/y3s42846
     axios.put('/changeMonitor', {
       product,
       run,
+    }).then(() => {
+      handleGetMonitors();
     })
+      .catch((err) => console.log(err))
   };
 
-  const handleMonitorJob = (product) => {
-    monitorJob(product.target.id);
-  };
 
   const handleScrape = (productValue, handle) => {
     axios(productValue)
@@ -230,7 +237,7 @@ https://kith.com/collections/mens-footwear/products/y3s42846
         </StyledForm>
         <MonitorTableContainer>
           <Monitored
-            monitors={monitorArray.flat()}
+            monitors={monitorArray.flat().sort()}
             startMonitor={handleStartMonitor}
             stopMonitor={handleStopMonitor}
           />

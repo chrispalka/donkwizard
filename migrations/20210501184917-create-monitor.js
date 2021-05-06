@@ -12,6 +12,7 @@ module.exports = {
       },
       run: {
         type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       user_id: {
         type: Sequelize.UUID,

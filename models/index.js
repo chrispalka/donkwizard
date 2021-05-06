@@ -104,6 +104,7 @@ module.exports = {
   }).then((response) => response)
   .catch((err) => console.log(err)),
   getMonitors: (user_id) => db.Monitor.findAll({
+    order: [['product', 'DESC']],
     where: {
       user_id,
     }

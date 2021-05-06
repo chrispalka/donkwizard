@@ -180,7 +180,9 @@ const Home = ({ isLoggedIn }) => {
             setWebhookField(webhookData.data);
           }
         })
-        .then(() => handleGetRecent())
+        .then(() => {
+          handleGetRecent()
+        })
         .catch((err) => console.log(err));
     }
     return () => { isMounted = false };
