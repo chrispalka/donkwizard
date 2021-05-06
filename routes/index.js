@@ -198,6 +198,7 @@ router.post('/addMonitor', async (req, res) => {
       const user = await getUserName(email);
       if (user) {
         await addMonitor(uuidv4(), productValue, user.dataValues.id);
+        res.sendStatus(200);
       } else {
         return false;
       }

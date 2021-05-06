@@ -95,10 +95,16 @@ const Monitor = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let monitorCheck = false;
+    monitorArray.flat().forEach((x) => {
+      if (x.product === productValue) {
+        monitorCheck = true;
+      }
+    });
     if (productValue.length === 0) {
       setShowUrlAlert(true);
       setTimeout(() => setShowUrlAlert(false), 2000);
-    } else if (monitorArray.flat().indexOf(productValue) === -1) {
+    } else if (!monitorCheck) {
       const valueArray = productValue.split('/');
       const handle = valueArray[valueArray.length - 1]
       const domain = valueArray[2]
@@ -135,10 +141,19 @@ https://kith.com/collections/mens-footwear/products/y3s42846
   };
 
   const handleMonitorSave = () => {
-    if (monitorArray.flat().indexOf(productValue) === -1) {
-      setMonitorArray([...monitorArray, productValue])
+    let monitorCheck = false;
+    console.log(monitorArray.flat())
+    monitorArray.flat().forEach((x) => {
+      if (x.product === productValue) {
+        monitorCheck = true;
+      }
+    })
+    if (!monitorCheck) {
       axios.post('/addMonitor', {
         productValue,
+      })
+        .then(() => {
+          handleGetMonitors()
       })
         .catch((err) => console.log(err))
     } else {
