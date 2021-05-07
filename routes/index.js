@@ -223,7 +223,6 @@ router.get('/getMonitors', async (req, res) => {
             id: monitor.dataValues.id,
           });
         })
-
           res.status(200).json(monitorArray);
       } else {
         return false;
@@ -240,12 +239,8 @@ router.get('/getAllMonitors', async (req, res) => {
     const monitors = await getAllMonitors();
     monitors.forEach((monitor) => {
       monitorArray.push(monitor.dataValues);
-    })
-    if (monitorArray.length !== 0) {
-      res.json(monitorArray);
-    } else {
-      return false;
-    }
+    });
+      res.status(200).json(monitorArray);
   } catch (e) {
     console.log(e)
   }

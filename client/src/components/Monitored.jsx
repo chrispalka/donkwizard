@@ -16,7 +16,6 @@ const Monitored = ({
   return (
     <>
       <Table striped>
-        {console.log('monitors: ', monitors)}
         <tbody>
           {monitors.map((monitor, i) => (
             <tr key={i} >
