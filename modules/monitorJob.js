@@ -24,7 +24,6 @@ export default setInterval(async () => {
           .then((response) => {
             const result = [];
             const delimitedResult = [];
-            console.log(response)
             title = response.title;
             response.variants.forEach((product) => {
               result.push(product.id);
@@ -32,7 +31,6 @@ export default setInterval(async () => {
                 `${product.title.replace(/[^0-9.]+/g, '')} - ${product.id}`
               )
             })
-            console.log(delimitedResult.join('\n'))
             productImage = response.featured_image !== undefined ? `http:${response.featured_image}` : notFound
             if (response.available) {
               const message = (`\`\`\`${result.join('\n')}\`\`\``);
