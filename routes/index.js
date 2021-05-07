@@ -101,15 +101,13 @@ router.post('/saveWebhook', async (req, res) => {
     const { webhookURL } = req.body;
     try {
       const user = await getUserName(email);
-      if (user) {
-        const webhook = await getWebhook(user.dataValues.id);
-        if (webhook) {
-          await updateWebhook(webhookURL, user.dataValues.id);
-        } else {
-          await addWebHook(uuidv4(), webhookURL, user.dataValues.id);
-        }
+      const webhook = await getWebhook(user.dataValues.id);
+      if (webhook) {
+        await updateWebhook(webhookURL, user.dataValues.id);
+        res.sendStatus(200);
       } else {
-        return false;
+        await addWebHook(uuidv4(), webhookURL, user.dataValues.id);
+        res.sendStatus(200);
       }
     } catch (e) {
       console.log(e);
@@ -119,11 +117,11 @@ router.post('/saveWebhook', async (req, res) => {
 
 router.post('/getMonitorWebhook', async (req, res) => {
   const { user_id } = req.body;
-  const webhook = await getWebhook(user_id);
-  if (webhook) {
-    res.json(webhook.dataValues.webhook);
-  } else {
-    return false;
+  try {
+    const webhook = await getWebhook(user_id);
+    res.status(200).json(webhook.dataValues.webhook);
+  } catch (e) {
+    console.log(e);
   }
 });
 
@@ -132,16 +130,8 @@ router.get('/getWebhook', async (req, res) => {
     const { email } = req.user[0];
     try {
       const user = await getUserName(email);
-      if (user) {
-        const webhook = await getWebhook(user.dataValues.id);
-        if (webhook) {
-          res.json(webhook.dataValues.webhook);
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
+      const webhook = await getWebhook(user.dataValues.id);
+      res.status(200).json(webhook.dataValues.webhook);
     } catch (e) {
       console.log(e);
     }
@@ -154,11 +144,8 @@ router.post('/saveRecent', async (req, res) => {
     const { siteValue } = req.body;
     try {
       const user = await getUserName(email);
-      if (user) {
-        await addRecent(uuidv4(), siteValue, user.dataValues.id, Date.now());
-      } else {
-        return false;
-      }
+      await addRecent(uuidv4(), siteValue, user.dataValues.id, Date.now());
+      res.sendStatus(200);
     } catch (e) {
       console.log(e);
     }
@@ -171,19 +158,11 @@ router.get('/getRecent', async (req, res) => {
     const { email } = req.user[0];
     try {
       const user = await getUserName(email);
-      if (user) {
-        const recents = await getRecent(user.dataValues.id);
-        recents.forEach((recent) => {
-          recentsArray.push(recent.dataValues.recents)
-        })
-        if (recentsArray.length !== 0) {
-          res.json(recentsArray);
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
+      const recents = await getRecent(user.dataValues.id);
+      recents.forEach((recent) => {
+        recentsArray.push(recent.dataValues.recents)
+      })
+      res.status(200).json(recentsArray);
     } catch (e) {
       console.log(e);
     }
@@ -196,12 +175,8 @@ router.post('/addMonitor', async (req, res) => {
     const { productValue } = req.body;
     try {
       const user = await getUserName(email);
-      if (user) {
-        await addMonitor(uuidv4(), productValue, user.dataValues.id);
-        res.sendStatus(200);
-      } else {
-        return false;
-      }
+      await addMonitor(uuidv4(), productValue, user.dataValues.id);
+      res.sendStatus(200);
     } catch (e) {
       console.log(e);
     }
@@ -214,19 +189,15 @@ router.get('/getMonitors', async (req, res) => {
     const { email } = req.user[0];
     try {
       const user = await getUserName(email);
-      if (user) {
-        const monitors = await getMonitors(user.dataValues.id);
-        monitors.forEach((monitor) => {
-          monitorArray.push({
-            product: monitor.dataValues.product,
-            run: monitor.dataValues.run,
-            id: monitor.dataValues.id,
-          });
-        })
-          res.status(200).json(monitorArray);
-      } else {
-        return false;
-      }
+      const monitors = await getMonitors(user.dataValues.id);
+      monitors.forEach((monitor) => {
+        monitorArray.push({
+          product: monitor.dataValues.product,
+          run: monitor.dataValues.run,
+          id: monitor.dataValues.id,
+        });
+      })
+      res.status(200).json(monitorArray);
     } catch (e) {
       console.log(e)
     }
@@ -240,7 +211,7 @@ router.get('/getAllMonitors', async (req, res) => {
     monitors.forEach((monitor) => {
       monitorArray.push(monitor.dataValues);
     });
-      res.status(200).json(monitorArray);
+    res.status(200).json(monitorArray);
   } catch (e) {
     console.log(e)
   }
@@ -264,9 +235,7 @@ router.put('/changeMonitor', async (req, res) => {
     const { product, run } = req.body;
     try {
       const user = await getUserName(email);
-      if (user) {
-        await changeMonitorState(product, user.dataValues.id, run)
-      }
+      await changeMonitorState(product, user.dataValues.id, run)
       res.sendStatus(200)
     } catch (e) {
       console.log(e);
@@ -344,10 +313,8 @@ router.put('/deleteWebhook', async (req, res) => {
     const { email } = req.user[0];
     try {
       const user = await getUserName(email);
-      if (user) {
-        await deleteWebhook(user.dataValues.id);
-        res.json('Success')
-      }
+      await deleteWebhook(user.dataValues.id);
+      res.status(200).json('Success')
     } catch (e) {
       console.log(e)
     }
