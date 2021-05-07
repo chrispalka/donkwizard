@@ -5,8 +5,6 @@ const notFound = 'https://safetyaustraliagroup.com.au/wp-content/uploads/2019/05
 
 export default setInterval(async () => {
   let productImage, title, webhookURL;
-  const result = [];
-  const delimitedResult = [];
   axios('/getAllMonitors')
     .then((response) => {
       response.data.forEach(async (item) => {
@@ -24,6 +22,9 @@ export default setInterval(async () => {
             return monitorScraper(data.data, handle);
           })
           .then((response) => {
+            const result = [];
+            const delimitedResult = [];
+            console.log(response)
             title = response.title;
             response.variants.forEach((product) => {
               result.push(product.id);
@@ -31,6 +32,7 @@ export default setInterval(async () => {
                 `${product.title.replace(/[^0-9.]+/g, '')} - ${product.id}`
               )
             })
+            console.log(delimitedResult.join('\n'))
             productImage = response.featured_image !== undefined ? `http:${response.featured_image}` : notFound
             if (response.available) {
               const message = (`\`\`\`${result.join('\n')}\`\`\``);
