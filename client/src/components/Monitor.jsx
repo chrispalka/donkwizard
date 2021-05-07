@@ -17,6 +17,9 @@ const axios = require('axios');
 
 const MonitorContainer = styled(Container)`
   margin-top: 2em;
+  .form-control {
+    margin-bottom: 1em;
+  }
 `
 const AlertContainer = styled(Container)`
   margin-bottom: 5em;
