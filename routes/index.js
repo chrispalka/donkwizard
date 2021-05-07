@@ -223,11 +223,8 @@ router.get('/getMonitors', async (req, res) => {
             id: monitor.dataValues.id,
           });
         })
-        if (monitorArray.length !== 0) {
-          res.json(monitorArray);
-        } else {
-          return false;
-        }
+
+          res.status(200).json(monitorArray);
       } else {
         return false;
       }
@@ -255,14 +252,11 @@ router.get('/getAllMonitors', async (req, res) => {
 });
 
 router.put('/deleteMonitor', async (req, res) => {
+  const { product } = req.body;
   if (req.user) {
-    const { email } = req.user[0];
     try {
-      const user = await getUserName(email);
-      if (user) {
-        await deleteMonitor(product, user.dataValues.id);
-        res.json('Success')
-      }
+      await deleteMonitor(product);
+      res.sendStatus(200);
     } catch (e) {
       console.log(e)
     }

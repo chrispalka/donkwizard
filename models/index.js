@@ -116,13 +116,12 @@ module.exports = {
     }
   }).then((response) => response)
   .catch((err) => console.log(err)),
-  deleteMonitor: (product, user_id) => db.Monitor.destroy({
+  deleteMonitor: (id) => db.Monitor.destroy({
     where: {
-      user_id,
-      product,
+      id,
     }
   }).then((response) => response)
-    .catch((err) => console.log.length(err)),
+    .catch((err) => console.log(err)),
   changeMonitorState: (product, user_id, run) => db.Monitor.update({ run },
     {
       where: {

@@ -129,20 +129,17 @@ https://kith.com/collections/mens-footwear/products/y3s42846
   const handleGetMonitors = () => {
     let array = [];
     axios('/getMonitors')
-      .then((monitorData) => {
-        monitorData.data.forEach((item) => {
-          array.push(item)
-          if (monitorData.data.length !== 0) {
-            setMonitorArray([array]);
-          }
-        })
+    .then((monitorData) => {
+      monitorData.data.forEach((item) => {
+        array.push(item)
       })
-      .catch((err) => console.log(err));
+      setMonitorArray([...array]);
+    })
+    .catch((err) => console.log(err));
   };
 
   const handleMonitorSave = () => {
     let monitorCheck = false;
-    console.log(monitorArray.flat())
     monitorArray.flat().forEach((x) => {
       if (x.product === productValue) {
         monitorCheck = true;
@@ -161,6 +158,15 @@ https://kith.com/collections/mens-footwear/products/y3s42846
       setTimeout(() => setShowProductPresentAlert(false), 2000);
     }
   };
+
+  const handleMonitorDelete = (product) => {
+    axios.put('/deleteMonitor', {
+      product
+    }).then(() => {
+      handleGetMonitors();
+    })
+    .catch((err) => console.log(err));
+  }
 
   const handleStartMonitor = (e) => {
     const product = e.target.id
@@ -255,6 +261,7 @@ https://kith.com/collections/mens-footwear/products/y3s42846
             monitors={monitorArray.flat().sort()}
             startMonitor={handleStartMonitor}
             stopMonitor={handleStopMonitor}
+            monitorDelete={handleMonitorDelete}
           />
         </MonitorTableContainer>
       </MonitorContainer>
