@@ -4,7 +4,9 @@ const axios = require('axios');
 const notFound = 'https://safetyaustraliagroup.com.au/wp-content/uploads/2019/05/image-not-found.png'
 
 export default setInterval(async () => {
-  let productImage, title, webhookURL
+  let productImage, title, webhookURL;
+  const result = [];
+  const delimitedResult = [];
   axios('/getAllMonitors')
     .then((response) => {
       response.data.forEach(async (item) => {
@@ -15,17 +17,26 @@ export default setInterval(async () => {
         axios.post('/getMonitorWebhook', {
           user_id,
         })
-        .then((webhook) => webhookURL = webhook.data)
-        .catch((err) => console.log(err));
+          .then((webhook) => webhookURL = webhook.data)
+          .catch((err) => console.log(err));
         axios(product)
           .then((data) => {
             return monitorScraper(data.data, handle);
           })
           .then((response) => {
             title = response.title;
+            response.variants.forEach((product) => {
+              result.push(product.id);
+              delimitedResult.push(
+                `${product.title.replace(/[^0-9.]+/g, '')} - ${product.id}`
+              )
+            })
             productImage = response.featured_image !== undefined ? `http:${response.featured_image}` : notFound
             if (response.available) {
-              webhookMessage(domain, webhookURL, product, `RESTOCK -- ${title}`, productImage);
+              const message = (`\`\`\`${result.join('\n')}\`\`\``);
+              const delimitedMessage = (`\`\`\`${delimitedResult.join('\n')}\`\`\``);
+              webhookMessage(domain, webhookURL, product, message, `RESTOCK -- ${title}`, productImage);
+              webhookMessage(domain, webhookURL, product, delimitedMessage, `RESTOCK -- ${title}`, productImage);
             } else {
               return false;
             }

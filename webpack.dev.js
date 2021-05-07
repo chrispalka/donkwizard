@@ -11,4 +11,5 @@ module.exports = merge(common, {
     path: DIST_DIR,
     publicPath: '/',
   },
+  devtool: "inline-source-map",
 });

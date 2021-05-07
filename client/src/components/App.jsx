@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import {
   Switch,
   Route,
@@ -14,10 +14,18 @@ import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons"
 import styled, { createGlobalStyle } from 'styled-components';
 import { Container } from 'react-bootstrap';
 import '../../../modules/monitorJob';
+const ForgotPassword = lazy(() => import('./ForgotPassword'));
+const Home = lazy(() => import('./Home'));
+const Login = lazy(() => import('./Login'));
+const Register = lazy(() => import('./Register'));
+const ResetPassword = lazy(() => import('./ResetPassword'));
+const Monitor = lazy(() => import('./Monitor'));
+
 import {
-  ForgotPassword,
-  Home, Login, Register, ResetPassword, NavBar, Footer, Monitor
+  NavBar,
+  Footer
 } from '../layout/index';
+
 
 const axios = require('axios');
 
@@ -72,6 +80,7 @@ const App = () => {
       <Global />
       <MainContainer>
         <NavBar isLoggedIn={isLoggedIn} location={location} />
+        <Suspense fallback={<div>Loading...</div>}>
         <Switch>
           <Route path="/login" exact component={() => <Login />}>
             {isLoggedIn ? <Redirect to="/" /> : <Login />}
@@ -86,6 +95,7 @@ const App = () => {
           {passwordUpdated ? <Redirect to="/login" /> : <ResetPassword hasUpdatedPassword={handleHasUpdatedPassword} />}
         </Route>
         </Switch>
+        </Suspense>
       <Footer links={FooterLinks} />
     </MainContainer>
     </>
