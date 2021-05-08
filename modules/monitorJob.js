@@ -23,7 +23,7 @@ export default setInterval(async () => {
             return monitorScraper(data.data, handle);
           })
           .then((response) => {
-            if (response) {
+            if (response.variants) {
               const QT = `[Balko](http://localhost:6776/?url=${productLink})`
               const result = [];
               const delimitedResult = [];
