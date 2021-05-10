@@ -7,7 +7,7 @@ const DIST_DIR = path.join(__dirname, 'public');
 module.exports = merge(common, {
   mode: 'development',
   output: {
-    filename: 'dev.bundle.js',
+    filename: '[name].dev.js',
     path: DIST_DIR,
     publicPath: '/',
   },

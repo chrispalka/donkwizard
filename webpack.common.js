@@ -1,9 +1,11 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const path = require('path');
 
 const SRC_DIR = path.join(__dirname, 'client/src');
+
 
 module.exports = {
   entry: `${SRC_DIR}/index.jsx`,
@@ -14,6 +16,10 @@ module.exports = {
       favicon: './client/src/assets/favicon.ico'
     }),
     new NodePolyfillPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: 'main.css',
+    }),
   ],
   module: {
     rules: [
@@ -31,7 +37,13 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: [{
+          loader: MiniCssExtractPlugin.loader,
+          options: {
+            publicPath: path.join(__dirname, 'public')
+          },
+        }, 'css-loader'
+        ]
       },
       {
         test: /\.(png|jpg|svg|eot|ttf|woff|woff2|ico|)$/,
@@ -54,4 +66,28 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.css'],
   },
+  optimization: {
+    splitChunks: {
+      chunks: 'async',
+      minSize: 20000,
+      minRemainingSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 30,
+      maxInitialRequests: 30,
+      enforceSizeThreshold: 50000,
+      cacheGroups: {
+        defaultVendors: {
+          test: '[name].bundle.js',
+          priority: -10,
+          reuseExistingChunk: true,
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
+    },
+  },
 };
+
