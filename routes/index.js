@@ -2,6 +2,8 @@ const { Router } = require('express');
 const passport = require('passport');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
+const axios = require('axios');
+const cheerio = require('cheerio');
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
 const LocalStrategy = require('passport-local').Strategy;
@@ -31,6 +33,20 @@ const { isAuthenticated } = require('../modules/auth');
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const router = Router();
+
+router.get('/gunMonitor', async (req, res) => {
+  axios('https://www.georgiagunstore.com/glock-45-9mm-mos-17rd-blk-reb.html')
+  .then((response) => {
+    const $ = cheerio.load(response.data, { xmlMode: false });
+    const productNode = $("div[class='stock available']")
+    if (productNode[0] !== undefined) {
+      res.status(200).send('Available');
+    } else {
+      res.sendStatus(200);
+    }
+  })
+  .catch((err) => console.log(err));
+})
 
 router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
