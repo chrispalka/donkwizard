@@ -20,7 +20,7 @@ export default setInterval(async () => {
           'https://www.georgiagunstore.com/pub/media/catalog/product/cache/d7339a089841e46eaea351e3bc746ce2/G/L/GLPR4550903MOSREB_1.jpg'
         );
       } else {
-        return false;
+        return false
       }
     })
     .catch((err) => console.log(err));

@@ -5,9 +5,9 @@
   "main": "index.jsx",
   "scripts": {
     "run": "nodemon server.js",
+    "start": "node server.js",
     "build-dev": "webpack --config webpack.dev.js --watch",
-    "build-prod": "webpack --config webpack.prod.js",
-    "heroku-postbuild": "npm run build-prod && node server.js",
+    "build": "webpack --config webpack.prod.js",
     "analyze": "source-map-explorer './public/*.js' --no-border-checks"
   },
   "engines": {
