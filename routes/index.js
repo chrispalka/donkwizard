@@ -46,7 +46,21 @@ router.get('/gunMonitor', async (req, res) => {
     }
   })
   .catch((err) => console.log(err));
-})
+});
+
+router.get('/gunMonitorTwo', async (req, res) => {
+  axios('https://www.georgiagunstore.com/glock-19-gen5-9mm-15rd-3-mags-mos-fs.html')
+  .then((response) => {
+    const $ = cheerio.load(response.data, { xmlMode: false });
+    const productNode = $("div[class='stock available']")
+    if (productNode[0] !== undefined) {
+      res.status(200).send('Available');
+    } else {
+      res.sendStatus(200);
+    }
+  })
+  .catch((err) => console.log(err));
+});
 
 router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
