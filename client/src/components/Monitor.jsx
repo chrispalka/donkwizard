@@ -88,6 +88,7 @@ const Monitor = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [monitorArray, setMonitorArray] = useState([]);
 
+
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
@@ -140,6 +141,7 @@ https://kith.com/collections/mens-footwear/products/y3s42846
     })
     .catch((err) => console.log(err));
   };
+
 
   const handleMonitorSave = () => {
     let monitorCheck = false;

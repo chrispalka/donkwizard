@@ -9,3 +9,6 @@ main.prod.js.LICENSE.txt
 defaultVendors-node_modules_babel_runtime_helpers_esm_slicedToArray_js-node_modules_babel_run-d707a0.dev.js
 470.prod.js
 main.css
+gunMonitor.js
+gunMonitorTwo.js
+webhookGun.js
