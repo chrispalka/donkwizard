@@ -13,6 +13,7 @@ import {
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons"
 import styled, { createGlobalStyle } from 'styled-components';
 import { Container } from 'react-bootstrap';
+import '../../../modules/monitorJob';
 const ForgotPassword = lazy(() => import('./ForgotPassword'));
 const Home = lazy(() => import('./Home'));
 const Login = lazy(() => import('./Login'));
