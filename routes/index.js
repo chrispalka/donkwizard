@@ -22,6 +22,7 @@ const {
   addRecent,
   getRecent,
   getMonitors,
+  monitorCleanup,
   deleteMonitor,
   changeMonitorState,
   addMonitor,
@@ -270,6 +271,15 @@ router.get('/getAllMonitors', async (req, res) => {
       monitorArray.push(monitor.dataValues);
     });
     res.status(200).json(monitorArray);
+  } catch (e) {
+    console.log(e)
+  }
+});
+
+router.get('/monitorCleanup', async (req, res) => {
+  try {
+    await monitorCleanup();
+    res.sendStatus(200);
   } catch (e) {
     console.log(e)
   }

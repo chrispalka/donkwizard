@@ -14,6 +14,7 @@ import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons"
 import styled, { createGlobalStyle } from 'styled-components';
 import { Container } from 'react-bootstrap';
 import '../../../modules/monitorJob';
+import '../../../modules/monitorCleanup';
 import '../../../modules/clubMonitor';
 import '../../../modules/clubMonitorTwo';
 const ForgotPassword = lazy(() => import('./ForgotPassword'));

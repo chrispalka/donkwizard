@@ -60,6 +60,19 @@ module.exports = {
     },
   }).then((response) => response)
     .catch((err) => console.log(err)),
+  monitorCleanup: () => db.Monitor.findAll({ raw: true }, {
+  }).then((response) => {
+    response.forEach((monitor) => {
+      if (Date.now() - monitor.createdAt > 2592000000) {
+        db.Monitor.destroy({
+          where: {
+            id: monitor.id
+          }
+        })
+      }
+    })
+  })
+    .catch((err) => console.log(err)),
   updateForgotPassword: (id, resetpasswordtoken, resetpasswordexpires) => db.User.update({
     resetpasswordtoken, resetpasswordexpires,
   },
@@ -102,7 +115,7 @@ module.exports = {
   addMonitor: (id, product, user_id) => db.Monitor.create({
     id, product, user_id,
   }).then((response) => response)
-  .catch((err) => console.log(err)),
+    .catch((err) => console.log(err)),
   getMonitors: (user_id) => db.Monitor.findAll({
     order: [['product', 'DESC']],
     where: {
@@ -115,7 +128,7 @@ module.exports = {
       run: true,
     }
   }).then((response) => response)
-  .catch((err) => console.log(err)),
+    .catch((err) => console.log(err)),
   deleteMonitor: (id) => db.Monitor.destroy({
     where: {
       id,
@@ -128,6 +141,6 @@ module.exports = {
         product,
         user_id,
       }
-  }).then((response) => response)
-  .catch((err) => console.log(err)),
+    }).then((response) => response)
+    .catch((err) => console.log(err)),
 };
