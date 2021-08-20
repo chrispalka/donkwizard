@@ -46,7 +46,7 @@ router.get('/clubMonitor', async (req, res) => {
         //   res.sendStatus(200);
         // }
     })
-    .catch((err) => res.sendStatus(404));
+    .catch((err) => res.status(404));
 });
 router.get('/clubMonitorTwo', async (req, res) => {
   axios('https://www.costco.com/.product.1477082.html')
@@ -60,7 +60,7 @@ router.get('/clubMonitorTwo', async (req, res) => {
         //   res.sendStatus(200);
         // }
     })
-    .catch((err) => res.sendStatus(404));
+    .catch((err) => res.status(404));
 });
 router.get('/gunMonitor', async (req, res) => {
   axios('https://www.georgiagunstore.com/glock-45-9mm-mos-17rd-blk-reb.html')
