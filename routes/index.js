@@ -34,32 +34,60 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const router = Router();
 
+router.get('/clubMonitor', async (req, res) => {
+  axios('https://www.costco.com/callaway-edge-10-piece-golf-club-set%2C-right-handed---stiff-flex.product.100683880.html')
+    .then((response) => {
+      res.status(200).send('Available')
+        // const $ = cheerio.load(response.data, { xmlMode: false });
+        // const productNode = $("div[class='stock available']")
+        // if (productNode[0] !== undefined) {
+        //   res.status(200).send('Available');
+        // } else {
+        //   res.sendStatus(200);
+        // }
+    })
+    .catch((err) => res.sendStatus(404));
+});
+router.get('/clubMonitorTwo', async (req, res) => {
+  axios('https://www.costco.com/.product.1477082.html')
+    .then((response) => {
+      res.status(200).send('Available')
+        // const $ = cheerio.load(response.data, { xmlMode: false });
+        // const productNode = $("div[class='stock available']")
+        // if (productNode[0] !== undefined) {
+        //   res.status(200).send('Available');
+        // } else {
+        //   res.sendStatus(200);
+        // }
+    })
+    .catch((err) => res.sendStatus(404));
+});
 router.get('/gunMonitor', async (req, res) => {
   axios('https://www.georgiagunstore.com/glock-45-9mm-mos-17rd-blk-reb.html')
-  .then((response) => {
-    const $ = cheerio.load(response.data, { xmlMode: false });
-    const productNode = $("div[class='stock available']")
-    if (productNode[0] !== undefined) {
-      res.status(200).send('Available');
-    } else {
-      res.sendStatus(200);
-    }
-  })
-  .catch((err) => console.log(err));
+    .then((response) => {
+      const $ = cheerio.load(response.data, { xmlMode: false });
+      const productNode = $("div[class='stock available']")
+      if (productNode[0] !== undefined) {
+        res.status(200).send('Available');
+      } else {
+        res.sendStatus(200);
+      }
+    })
+    .catch((err) => console.log(err));
 });
 
 router.get('/gunMonitorTwo', async (req, res) => {
   axios('https://www.georgiagunstore.com/glock-19-gen5-9mm-15rd-3-mags-mos-fs.html')
-  .then((response) => {
-    const $ = cheerio.load(response.data, { xmlMode: false });
-    const productNode = $("div[class='stock available']")
-    if (productNode[0] !== undefined) {
-      res.status(200).send('Available');
-    } else {
-      res.sendStatus(200);
-    }
-  })
-  .catch((err) => console.log(err));
+    .then((response) => {
+      const $ = cheerio.load(response.data, { xmlMode: false });
+      const productNode = $("div[class='stock available']")
+      if (productNode[0] !== undefined) {
+        res.status(200).send('Available');
+      } else {
+        res.sendStatus(200);
+      }
+    })
+    .catch((err) => console.log(err));
 });
 
 router.get('/', (req, res) => {
