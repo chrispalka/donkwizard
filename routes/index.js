@@ -51,7 +51,7 @@ router.get('/clubMonitor', async (req, res) => {
         //   res.sendStatus(200);
         // }
     })
-    .catch((err) => res.status(404).send('Product Not Found'));
+    .catch((err) => console.log(err));
 });
 router.get('/clubMonitorTwo', async (req, res) => {
   axios('https://www.costco.com/.product.1477082.html', {
