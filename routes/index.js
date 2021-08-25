@@ -35,7 +35,7 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const router = Router();
 
-const headers = {"Access-Control-Allow-Origin": "*"}
+const headers = {"Access-Control-Allow-Origin": "*", 'Access-Control-Allow-Credentials' : true}
 
 router.get('/clubMonitor', async (req, res) => {
   axios('https://www.costco.com/magneto-kicktail-longboard.product.100786618.html', {
@@ -51,7 +51,7 @@ router.get('/clubMonitor', async (req, res) => {
         //   res.sendStatus(200);
         // }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err))
 });
 router.get('/clubMonitorTwo', async (req, res) => {
   axios('https://www.costco.com/.product.1477082.html', {
