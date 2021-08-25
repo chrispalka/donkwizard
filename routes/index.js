@@ -38,9 +38,8 @@ const router = Router();
 const headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'}
 
 router.get('/clubMonitor', async (req, res) => {
-  axios('https://www.costco.com/callaway-edge-10-piece-golf-club-set%2C-right-handed---stiff-flex.product.100683880.html', {
-    headers: headers,
-  })
+  axios('https://www.costco.com/magneto-kicktail-longboard.product.100786618.html')
+
     .then((response) => {
       res.status(200).send('Available')
         // const $ = cheerio.load(response.data, { xmlMode: false });
