@@ -38,9 +38,7 @@ const router = Router();
 const headers = {"Access-Control-Allow-Origin": "*", 'Access-Control-Allow-Credentials' : true}
 
 router.get('/clubMonitor', async (req, res) => {
-  axios('https://www.costco.com/magneto-kicktail-longboard.product.100786618.html', {
-    headers: headers,
-  })
+  axios('https://www.costco.com/callaway-edge-10-piece-golf-club-set%2C-right-handed---stiff-flex.product.100683880.html')
     .then((response) => {
       res.status(200).send('Available')
         // const $ = cheerio.load(response.data, { xmlMode: false });
@@ -51,12 +49,10 @@ router.get('/clubMonitor', async (req, res) => {
         //   res.sendStatus(200);
         // }
     })
-    .catch((err) => res.status(404).send(err))
+    .catch((err) => res.status(404).send('Product Not Found'))
 });
 router.get('/clubMonitorTwo', async (req, res) => {
-  axios('https://www.costco.com/.product.1477082.html', {
-    headers: headers,
-  })
+  axios('https://www.costco.com/.product.1477082.html')
     .then((response) => {
       res.status(200).send('Available')
         // const $ = cheerio.load(response.data, { xmlMode: false });

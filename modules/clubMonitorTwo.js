@@ -7,14 +7,14 @@ export default setInterval(async () => {
       if (response.data === 'Available') {
         webhookMessage(
           'https://www.costco.com/',
-          'https://discord.com/api/webhooks/878319281656463370/mDqDQOoXERxhqGv6-lBv1xzqEzgrG_l4BXr4aL8xJe3c5upphBH3h3O79eB8kbvHliZo',
+          'https://discord.com/api/webhooks/880141784456503329/aPcTwPj71fbMp-0_hfAaGG5ITYfyWNVhbZ5ZMqM5tWs-zEMAFfdu3gZVnBRKUOc0S7eo',
           'https://www.costco.com/.product.1477082.html',
           'PRODUCT LOADED - Callaway Edge 10 Piece Golf Club',
           'https://img.btdmp.com/10219/10219842/products/0x540@162541728885e5f75ca0.jpeg'
         );
         webhookMessage(
           'https://www.costco.com/',
-          'https://discord.com/api/webhooks/697216689464672296/hml2cwYyNaxhnkSYU9RwCNjf1u6gMUH2AsZKrkZey6LNlEXtDHXtCbIoaW7nTqVC_piV',
+          'https://discord.com/api/webhooks/880141073790414920/SGQUUQvazYCnlzmCKUetOMS-XIdNlHufoknArURgQ0s-g2Acx2wQoJGxCuGUCIUxKFfu',
           'https://www.costco.com/.product.1477082.html',
           'PRODUCT LOADED - Callaway Edge 10 Piece Golf Club',
           'https://img.btdmp.com/10219/10219842/products/0x540@162541728885e5f75ca0.jpeg'
