@@ -4,8 +4,8 @@
   "description": "Variant Scraper",
   "main": "index.jsx",
   "scripts": {
-    "run": "nodemon server.js",
-    "start": "node server.js",
+    "run": "node server.js",
+    "start": "nodemon server.js",
     "build-dev": "webpack --config webpack.dev.js --watch",
     "build": "webpack --config webpack.prod.js",
     "analyze": "source-map-explorer './public/*.js' --no-border-checks"

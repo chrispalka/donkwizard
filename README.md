@@ -50,6 +50,7 @@ module.exports = {
 Run migration & start application
 ```
 sequelize db:migrate
+npm run build-dev
 npm run start
 ```
 ## License
